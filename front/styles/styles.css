@@ -1,0 +1,61 @@
+body{
+    height: 100vh;
+    background-color: black;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  /*ENCABEZADO*/
+  
+  header {
+    position: fixed; /* Fija el header en la parte superior */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Un valor alto para que el header esté encima */
+  }
+  
+  .menuBox {  background-color:rgba(0, 0, 0, 0.185);
+    padding: .9%;
+    height: 40px;
+  }
+  
+  .mainmenu {
+    margin-right: 60px;
+    float: right;
+    display: flex; 
+    list-style-type: none; 
+    padding: 0;
+  }
+  
+  .mainmenu li > a {
+      padding: 7px 12px;
+      font-size: 20px;
+      color: rgb(255, 255, 255);  
+  }
+  
+  .mainmenu li {
+    margin-right: 30px; 
+  }
+  
+  .mainmenu agregar-btn{
+    font-size: 20px;
+      color: rgb(255, 255, 255); 
+  }
+  .socialNetworks {
+    margin-top: 4%;
+    align-items: center;
+    display: flex; 
+    list-style-type: none; 
+    align-items: center; /* Centra verticalmente el texto */
+    justify-content: center; /* Centra horizontalmente el texto */    
+  }
+  
+  .socialNetworks li {
+    margin-right: 30px; 
+  }
+  
+  .socialNetworks img {
+    width: 40px; 
+    height: 30px; 
+  }

@@ -1,0 +1,42 @@
+>>  Historia de Usuario 1
+Título: Registro de Usuario
+
+Descripción: Como usuario, quiero poder registrarme en la aplicación para poder acceder y reservar clases de baile.
+
+Criterios de Aceptación:
+Debe haber un formulario de registro con campos para nombre, correo electrónico, contraseña y confirmación de contraseña.
+Al registrarse, se debe enviar un correo de verificación.
+La cuenta solo se activará después de la verificación del correo.
+
+
+>>  Historia de Usuario 2
+Título: Inicio de Sesión
+
+Descripción: Como usuario registrado, quiero poder iniciar sesión en la aplicación para acceder a mis reservas y gestionar mis turnos.
+
+Criterios de Aceptación:
+Debe haber un formulario de inicio de sesión con campos para correo electrónico y contraseña.
+Debe proporcionar retroalimentación en caso de errores (credenciales incorrectas, campos vacíos, etc.).
+Al iniciar sesión, el usuario debe ser redirigido a su panel de control.
+
+
+>>  Historia de Usuario 3
+Título: Reservar Clase de Baile
+
+Descripción: Como usuario autenticado, quiero poder reservar una clase de baile para un estilo específico con un profesor en un horario determinado.
+
+Criterios de Aceptación:
+Debe haber un calendario interactivo que muestre las clases disponibles.
+El usuario debe poder seleccionar el estilo de baile, el profesor y la fecha y hora de la clase.
+La reserva debe ser confirmada y reflejada en el panel de usuario.
+
+
+>>  Historia de Usuario 4
+Título: Cancelar Reserva
+
+Descripción: Como usuario, quiero poder cancelar una clase de baile reservada hasta el día anterior para liberar el espacio para otros usuarios.
+
+Criterios de Aceptación:
+El usuario debe poder ver todas sus reservas en su panel de control.
+Debe haber una opción para cancelar la reserva.
+Al cancelar, la clase debe ser eliminada de las reservas del usuario y reflejarse en el calendario.

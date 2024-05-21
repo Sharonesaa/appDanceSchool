@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/userRegister.css">
+
+    <title>userRegister</title>
+</head>
+<body>
+    <div class="container" id="movieFormContainer">
+        <div style ="display:flex; justify-content: space-between;">
+            <h1>Registrar usuario</h1>
+            <button type="button" class="button-close" onclick="closeIframe()">&times;</button>
+        </div>
+        <form id="movieForm">
+
+            
+            <label for="name">Nombre de Usuario:</label>
+            <input type="text"name="name" required>
+
+            <label for="email">Correo electrónico:</label>
+            <input type="email" name="email" required>
+
+            <label for="phone">Número Telefónico:</label>
+            <input type="number" name="phone" required>
+    
+            <label for="password">Password:</label>
+            <input type="text"  name="password" required>
+
+            <label for="profilePicture">Foto de Perfil:</label>
+            <input type="file" name="profilePicture" accept="image/*">
+
+            <button type="submit">Agregar</button>
+            <button type="button" class="button-secondary" onclick="vaciarFormulario()" >Vaciar formulario</button>
+            
+        </form>
+    </div>
+    </script>
+</body>
+</html>
