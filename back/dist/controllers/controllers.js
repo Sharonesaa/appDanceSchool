@@ -14,6 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const multer_1 = __importDefault(require("multer"));
+require("dotenv").config();
+//express: Importa los tipos Request y Response de Express, que se usan para manejar solicitudes y respuestas HTTP.
+// nodemailer: Se utiliza para enviar correos electrónicos.
+// multer: Middleware para manejar la subida de archivos en aplicaciones Node.js.
+// path: Módulo de Node.js para trabajar con rutas de archivos y directorios.
+//diskStorage: Configura el almacenamiento en disco para los archivos subidos.
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/');
