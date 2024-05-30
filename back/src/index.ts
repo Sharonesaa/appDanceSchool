@@ -1,16 +1,10 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import userController from './controllers/userController';
+import server from './server';
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+// import bodyParser from 'body-parser';
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+import { PORT } from './config/envs';
 
-app.post('/register', userController.register);
-app.get('/users', userController.getUsers);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
