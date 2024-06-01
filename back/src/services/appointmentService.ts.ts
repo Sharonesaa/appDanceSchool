@@ -1,4 +1,4 @@
-import { AppointmentDTO } from '../dto/appointmentDto';
+import { AppointmentDTO } from '../dto/TurnsDto'
 
 // Simula una base de datos en memoria
 const appointments: AppointmentDTO[] = [];

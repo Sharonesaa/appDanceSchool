@@ -4,12 +4,16 @@ export interface UserDto {
     phone: string;
     password: string;
     profilePicture: string;
-    active : boolean
+    active : boolean;
+    credentials:{
+      username: string,
+      password: string,
+    }
   }
-
   
-export interface UserLoginDTO {
-  username: string;
-  password: string;
-}
+
+  export interface CredentialDTO {
+    username: string;
+    password: string;
+  }
   

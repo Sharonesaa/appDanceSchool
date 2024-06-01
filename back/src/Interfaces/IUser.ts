@@ -5,11 +5,12 @@ export interface IUser {
   phone: string;
   password: string;
   profilePicture: string;
-  active: boolean
+  active: boolean;
+  credentialsId: number;
 }
 
-export interface UserLoginDTO {
+export interface ICredential {
+  id: number;
   username: string;
   password: string;
 }
-

@@ -3,6 +3,8 @@ export interface AppointmentDTO {
     userId: string;
     date: string;
     time: string;
-    // Otros campos que necesites
+    class : string;
+    status: 'active' | 'cancelled';
+   
   }
   

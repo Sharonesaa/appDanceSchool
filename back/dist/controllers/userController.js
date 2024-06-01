@@ -9,25 +9,76 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.getUsers = exports.createUser = void 0;
+exports.loginUser = exports.deleteUser = exports.getUserById = exports.getUsers = exports.createUser = void 0;
 const userService_1 = require("../services/userService");
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, phone, password, profilePicture, username, active } = req.body;
-    const newUser = yield (0, userService_1.createUserServices)({ name, email, phone, password, profilePicture, username, active });
-    res.status(201).json(newUser);
+    try {
+        const userData = req.body;
+        if (!userData.credentials || !userData.credentials.username || !userData.credentials.password) {
+            return res.status(400).json({ message: 'Username and password are required' });
+        }
+        const newUser = yield (0, userService_1.createUserService)(userData);
+        res.status(201).json(newUser);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error creating user', error });
+    }
 });
 exports.createUser = createUser;
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield (0, userService_1.getUsersService)();
-    res.status(201).json(users);
+    console.log("hola");
+    try {
+        const users = yield (0, userService_1.getUsersService)();
+        res.status(200).json(users);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error fetching users', error });
+    }
 });
 exports.getUsers = getUsers;
+const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const user = yield (0, userService_1.getUserByIdService)(Number(id));
+        if (user) {
+            res.status(200).json(user);
+        }
+        else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error fetching user', error });
+    }
+});
+exports.getUserById = getUserById;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.body;
-    yield (0, userService_1.deleteUserService)(id);
-    res.status(201).json({ message: "eliminado" });
+    try {
+        yield (0, userService_1.deleteUserService)(Number(id));
+        res.status(200).json({ message: 'User deleted' });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error deleting user', error });
+    }
 });
 exports.deleteUser = deleteUser;
+const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const loginData = req.body;
+    try {
+        const user = yield (0, userService_1.loginUserService)(loginData);
+        if (user) {
+            res.status(200).json(user);
+        }
+        else {
+            res.status(401).json({ message: 'Invalid credentials' });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error logging in', error });
+    }
+});
+exports.loginUser = loginUser;
 // LOGICA ANTES DE CLASE
 // const createUser = async (req: Request, res: Response) => {
 //   upload(req, res, async function (err) {

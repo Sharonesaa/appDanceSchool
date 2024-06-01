@@ -9,8 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserService = exports.getUsersService = exports.createUserServices = void 0;
-// LOGICA DE CLASE
+exports.loginUserService = exports.getUserByIdService = exports.deleteUserService = exports.getUsersService = exports.createUserService = void 0;
 let users = [{
         id: 1,
         name: "Sharon",
@@ -18,11 +17,28 @@ let users = [{
         phone: "1170545821",
         password: "sole",
         profilePicture: "img.jpg",
-        username: "sharonesaa",
-        active: true
+        active: true,
+        credentialsId: 1
+    },
+    {
+        id: 2,
+        name: "John Doe",
+        email: "john.doe@example.com",
+        phone: "1234567890",
+        password: "securepassword",
+        profilePicture: "profile.jpg",
+        active: true,
+        credentialsId: 2
     }];
-let id = 2;
-const createUserServices = (userData) => __awaiter(void 0, void 0, void 0, function* () {
+let credentials = [];
+let id = 1;
+const createUserService = (userData) => __awaiter(void 0, void 0, void 0, function* () {
+    // Generar credenciales automáticas
+    const username = generateUsername(userData.name);
+    const password = generatePassword();
+    // Crear la credencial y obtener su ID
+    const credentialsId = createCredential(username, password);
+    // Crear el nuevo usuario
     const newUser = {
         id,
         name: userData.name,
@@ -30,24 +46,61 @@ const createUserServices = (userData) => __awaiter(void 0, void 0, void 0, funct
         phone: userData.phone,
         password: userData.password,
         profilePicture: userData.profilePicture,
-        username: userData.username,
         active: userData.active,
+        credentialsId
     };
     users.push(newUser);
     id++;
     return newUser;
 });
-exports.createUserServices = createUserServices;
+exports.createUserService = createUserService;
+// Generar un nombre de usuario basado en el nombre completo
+const generateUsername = (fullName) => {
+    const nameParts = fullName.trim().split(' ');
+    const firstName = nameParts[0].toLowerCase();
+    const lastName = nameParts[nameParts.length - 1].toLowerCase();
+    return `${firstName}.${lastName}`;
+};
+// Generar una contraseña aleatoria
+const generatePassword = () => {
+    // Lógica para generar una contraseña aleatoria
+    return 'password'; // Aquí debes implementar tu lógica real
+};
+// Crear una credencial y obtener su ID
+const createCredential = (username, password) => {
+    const newCredential = {
+        id,
+        username,
+        password
+    };
+    credentials.push(newCredential);
+    id++;
+    return newCredential.id;
+};
 const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
     return users;
 });
 exports.getUsersService = getUsersService;
 const deleteUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    users = users.filter((user) => {
-        return user.id !== id;
-    });
+    users = users.filter((user) => user.id !== id);
 });
 exports.deleteUserService = deleteUserService;
+const getUserByIdService = (id) => {
+    return users.find(user => user.id === id) || null;
+};
+exports.getUserByIdService = getUserByIdService;
+const loginUserService = (loginData) => {
+    const { username, password } = loginData;
+    const credential = credentials.find(c => c.username === username && c.password === password);
+    if (credential) {
+        const user = users.find(u => u.credentialsId === credential.id);
+        return user || null;
+    }
+    else {
+        return null;
+    }
+};
+exports.loginUserService = loginUserService;
 // MI LOGICA NO LA EXPLICADA EN CLASE 
 // Aquí deberías importar tu cliente de base de datos, por ejemplo pg para PostgreSQL
 // const createUser = async (user: IUser): Promise<void> => {

@@ -11,8 +11,7 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "start": "node dist/index.js",
-    "dev": "nodemon"
+    "start" :"nodemon"
   },
   "dependencies": {
     "body-parser": "^1.20.2",

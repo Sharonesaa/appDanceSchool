@@ -1,48 +1,69 @@
-
+// controllers/userController.ts
 import { Request, Response } from 'express';
-import { createUserServices, getUsersService, deleteUserService, getUserByIdService, loginUserService } from '../services/userService';
-import upload from '../middleware/multerConfig';
-import {IUser, UserLoginDTO} from '../Interfaces/IUser';
-
+import { createUserService, getUsersService, getUserByIdService, deleteUserService, loginUserService } from '../services/userService';
+import { UserDto, CredentialDTO } from '../dto/UserDto';
 
 export const createUser = async (req: Request, res: Response) => {
-  const { name, email, phone, password, profilePicture, username, active} = req.body;
-  const newUser: IUser = await createUserServices({name, email, phone, password, profilePicture, active})
-  res.status(201).json(newUser)
-}
+  try {
+    const userData: UserDto = req.body;
+    
+    if (!userData.credentials || !userData.credentials.username || !userData.credentials.password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
 
-export const getUsers = async (req: Request, res: Response) => {
-  const users : IUser[] = await getUsersService();
-  res.status(201).json(users)
-}
-
-export const deleteUser = async (req: Request, res: Response) => {
-  const {id} = req.body 
-  await deleteUserService(id)
-  res.status(201).json({message:"eliminado"})
-}
-
-export const getUserById = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const numericId = Number(id);
-  if (isNaN(numericId)) {
-    return res.status(400).json({ message: 'Invalid ID format' });
-  }
-  const user = getUserByIdService(numericId);
-  if (user) {
-    res.status(200).json(user);
-  } else {
-    res.status(404).json({ message: 'User not found' });
+    const newUser = await createUserService(userData);
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating user', error });
   }
 };
 
-export const loginUser = (req: Request, res: Response) => {
-  const loginData: UserLoginDTO = req.body;
-  const user = loginUserService(loginData);
-  if (user) {
-    res.status(200).json(user);
-  } else {
-    res.status(401).json({ message: 'Invalid credentials' });
+
+export const getUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await getUsersService();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users', error });
+  }
+};
+
+export const getUserById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const user = await getUserByIdService(Number(id));
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user', error });
+  }
+};
+
+export const deleteUser = async (req: Request, res: Response) => {
+  const { id } = req.body;
+  try {
+    await deleteUserService(Number(id));
+    res.status(200).json({ message: 'User deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting user', error });
+  }
+};
+
+export const loginUser = async (req: Request, res: Response) => {
+  const loginData: CredentialDTO = req.body;
+  console.log(loginData)
+  try {
+    const user = await loginUserService(loginData);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(401).json({ message: 'Invalid ' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error logging in', error });
   }
 };
 

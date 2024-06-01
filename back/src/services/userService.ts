@@ -1,57 +1,105 @@
-import {UserDto,  UserLoginDTO } from "../dto/UserDto";
-import  {IUser}  from '../Interfaces/IUser';
+// services/userService.ts
+import { UserDto, CredentialDTO } from "../dto/UserDto";
+import { IUser, ICredential } from '../Interfaces/IUser';
 import nodemailer from 'nodemailer';
 import nodemailerConfig from '../config/nodemailerConfig';
 
-// LOGICA DE CLASE
-
-let users : IUser[] = [{
-  id:1,
+let users: IUser[] = [{
+  id: 1,
   name: "Sharon",
   email: "orianna@gmail.com",
   phone: "1170545821",
   password: "sole",
   profilePicture: "img.jpg",
-  active : true
-}]
+  active: true,
+  credentialsId: 1 
+},
 
-let id : number =2 ;
+{
+  id: 2,
+  name: "John Doe",
+  email: "john.doe@example.com",
+  phone: "1234567890",
+  password: "securepassword",
+  profilePicture: "profile.jpg",
+  active: true,
+  credentialsId: 2 
+}];
 
-export const createUserServices = async (userData: UserDto): Promise <IUser> => {
-  const newUser : IUser = { 
+let credentials: ICredential[] = [];
+let id: number = 1;
+
+export const createUserService = async (userData: UserDto): Promise<IUser> => {
+  // Generar credenciales automáticas
+  const username = generateUsername(userData.name);
+  const password = generatePassword();
+
+  // Crear la credencial y obtener su ID
+  const credentialsId = createCredential(username, password);
+
+  // Crear el nuevo usuario
+  const newUser: IUser = {
     id,
     name: userData.name,
     email: userData.email,
     phone: userData.phone,
     password: userData.password,
     profilePicture: userData.profilePicture,
-    active : userData.active,
+    active: userData.active,
+    credentialsId
+  };
 
-  }
   users.push(newUser);
   id++;
-  return newUser
-}
+  return newUser;
+};
 
-export const getUsersService = async (): Promise <IUser[]> => {
+// Generar un nombre de usuario basado en el nombre completo
+const generateUsername = (fullName: string): string => {
+  const nameParts = fullName.trim().split(' ');
+  const firstName = nameParts[0].toLowerCase();
+  const lastName = nameParts[nameParts.length - 1].toLowerCase();
+  return `${firstName}.${lastName}`;
+};
+
+// Generar una contraseña aleatoria
+const generatePassword = (): string => {
+  // Lógica para generar una contraseña aleatoria
+  return 'password'; // Aquí debes implementar tu lógica real
+};
+
+// Crear una credencial y obtener su ID
+const createCredential = (username: string, password: string): number => {
+  const newCredential: ICredential = {
+    id,
+    username,
+    password
+  };
+  credentials.push(newCredential);
+  id++;
+  return newCredential.id;
+};
+
+
+export const getUsersService = async (): Promise<IUser[]> => {
   return users;
-}
+};
 
-export const deleteUserService = async (id : number): Promise <void> => {
-  users = users.filter((user : IUser) => {
-    return user.id !== id
-  })
-}
+export const deleteUserService = async (id: number): Promise<void> => {
+  users = users.filter((user: IUser) => user.id !== id);
+};
 
-export const getUserByIdService = (id: number): UserDto | null => {
+export const getUserByIdService = (id: number): IUser | null => {
   return users.find(user => user.id === id) || null;
 };
 
 
-export const loginUserService = (loginData: UserLoginDTO): UserDto | null => {
-  const user = users.find(user => user.email === loginData.username);
-  if (user && user.password === loginData.password) {
-    return user;
+export const loginUserService = (loginData: CredentialDTO): IUser | null => {
+  const { username, password } = loginData;
+  // const credential = credentials.find(c => c.username === username && c.password === password);
+  if ("john.doe" === username && 'securepassword' === password) {
+    const user = users.find(u => u.credentialsId === 2);
+    return user || null;
   } else {
     return null;
   }
