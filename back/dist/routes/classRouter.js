@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const classController_1 = require("../controllers/classController");
+const classRouter = (0, express_1.Router)();
+classRouter.get('/', classController_1.getAllClassesController);
+classRouter.get('/:id', classController_1.getClassByIdController);
+classRouter.post('/', classController_1.createClassController);
+classRouter.put('/:id', classController_1.updateClassController);
+classRouter.patch('/:id/deactivate', classController_1.deactivateClassController);
+exports.default = classRouter;

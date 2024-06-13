@@ -11,13 +11,16 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "start" :"nodemon"
+    "start": "nodemon"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.13"
+    "nodemailer": "^6.9.13",
+    "pg": "^8.11.5",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
   }
 }

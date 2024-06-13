@@ -1,13 +1,10 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const appointmentService_ts_1 = require("../services/appointmentService.ts");
-const auth_1 = __importDefault(require("../middleware/auth"));
+const appointmentController_1 = require("../controllers/appointmentController");
 const appointmentRouter = (0, express_1.Router)();
-appointmentRouter.post('/', appointmentService_ts_1.createAppointment);
-appointmentRouter.get('/', auth_1.default, appointmentService_ts_1.getAppointments);
-appointmentRouter.delete('/:id', appointmentService_ts_1.cancelAppointment); // Se asume que se cancela una cita específica por ID
+appointmentRouter.post('/schedule', appointmentController_1.createAppointment);
+appointmentRouter.get('/', appointmentController_1.getAppointments);
+appointmentRouter.get('/:id', appointmentController_1.getAppointmentById);
+appointmentRouter.put('/cancel/:id', appointmentController_1.cancelAppointment);
 exports.default = appointmentRouter;

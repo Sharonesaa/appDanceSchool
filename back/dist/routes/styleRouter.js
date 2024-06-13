@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const styleController_1 = require("../controllers/styleController");
+const styleRouter = (0, express_1.Router)();
+styleRouter.post('/', styleController_1.createStyle);
+styleRouter.get('/', styleController_1.getStyles);
+styleRouter.put('/:id', styleController_1.updateStyle);
+styleRouter.patch('/deactivate/:id', styleController_1.deactivateStyle);
+exports.default = styleRouter;

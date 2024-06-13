@@ -1,20 +1,20 @@
 // controllers/userController.ts
 import { Request, Response } from 'express';
-import { createUserService, getUsersService, getUserByIdService, deleteUserService, loginUserService } from '../services/userService';
-import { UserDto, CredentialDTO } from '../dto/UserDto';
+import { createUserService, getUsersService, getUserByIdService, deactivateUserService, loginUserService } from '../services/userService';
+import { UserDTO, CredentialDTO } from '../dto/UserDto';
+import { Console } from 'console';
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const userData: UserDto = req.body;
-    
-    if (!userData.credentials || !userData.credentials.username || !userData.credentials.password) {
-      return res.status(400).json({ message: 'Username and password are required' });
-    }
-
+    const userData: UserDTO = req.body;
     const newUser = await createUserService(userData);
-    res.status(201).json(newUser);
+    res.status(201).json({
+      message: 'User created successfully',
+      user: newUser
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating user', error });
+    res.status(400).json({ message: 'Error creating user',error });
+    console.error('Error during transaction:', error);
   }
 };
 
@@ -29,9 +29,12 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 export const getUserById = async (req: Request, res: Response) => {
-  const { id } = req.params;
   try {
-    const user = await getUserByIdService(Number(id));
+    const userId = parseInt(req.params.id, 10);
+    if (isNaN(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const user = await getUserByIdService(userId);
     if (user) {
       res.status(200).json(user);
     } else {
@@ -39,101 +42,45 @@ export const getUserById = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({ message: 'Error fetching user', error });
+    
   }
 };
 
-export const deleteUser = async (req: Request, res: Response) => {
-  const { id } = req.body;
+
+export const deactivateUserController = async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.id, 10);
+
+  if (isNaN(userId)) {
+    return res.status(400).json({ message: 'Invalid user ID' });
+  }
+
   try {
-    await deleteUserService(Number(id));
-    res.status(200).json({ message: 'User deleted' });
+    const updatedUser = await deactivateUserService(userId);
+    return res.status(200).json(updatedUser);
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting user', error });
+    return res.status(404).json({ message: error });
   }
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-  const loginData: CredentialDTO = req.body;
-  console.log(loginData)
   try {
-    const user = await loginUserService(loginData);
+    const { username, password } = req.body;
+    const user = await loginUserService(username, password);
     if (user) {
-      res.status(200).json(user);
+      res.status(200).json({
+        login: true,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          birthdate: user.birthdate,
+          nDni: user.nDni,
+        },
+      });
     } else {
-      res.status(401).json({ message: 'Invalid ' });
+      res.status(400).json({ login: false, message: 'Invalid credentials' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error logging in', error });
+    res.status(500).json({ message: 'Error during login', error });
   }
 };
-
-// LOGICA ANTES DE CLASE
-
-// const createUser = async (req: Request, res: Response) => {
-//   upload(req, res, async function (err) {
-//     if (err) {
-//       return res.status(500).send({ message: 'Error uploading file.' });
-//     }
-
-//     const { name, email, phone, password, username } = req.body;
-//     const profilePicture = req.file?.path;
-
-//     const user: IUser = {
-//       name,
-//       email,
-//       phone,
-//       password,
-//       profilePicture,
-//       username
-//     };
-
-//     try {
-//       await userService.createUser(user);
-//       res.status(200).send({ message: 'Usuario registrado y correo enviado.', profilePicture });
-//     } catch (error) {
-//       res.status(500).send({ message: 'Error al registrar el usuario.', error });
-//     }
-//   });
-// };
-
-// const getUsers = async (req: Request, res: Response) => {
-//   try {
-//     const users = await userService.getUsers();
-//     res.status(200).send(users);
-//   } catch (error) {
-//     res.status(500).send({ message: 'Error al obtener los usuarios.', error });
-//   }
-// };
-
-// const deleteUser = async (req: Request, res: Response) => {
-//   const userId = req.params.id;
-//   try {
-//     await userService.deleteUser(userId);
-//     res.status(200).send({ message: 'Usuario eliminado correctamente.' });
-//   } catch (error) {
-//     res.status(500).send({ message: 'Error al eliminar el usuario.', error });
-//   }
-// };
-
-// const updateUser = async (req: Request, res: Response) => {
-//   const userId = req.params.id;
-//   const { name, email, phone, password, username } = req.body;
-
-//   const updatedUser: IUser = {
-//     name,
-//     email,
-//     phone,
-//     password,
-//     username,
-//     profilePicture: req.file?.path // Assumes profile picture is being updated via multer
-//   };
-
-//   try {
-//     await userService.updateUser(userId, updatedUser);
-//     res.status(200).send({ message: 'Usuario actualizado correctamente.' });
-//   } catch (error) {
-//     res.status(500).send({ message: 'Error al actualizar el usuario.', error });
-//   }
-// };
-
-// export default { createUser, getUsers, deleteUser, updateUser };

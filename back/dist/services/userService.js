@@ -8,148 +8,72 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUserService = exports.getUserByIdService = exports.deleteUserService = exports.getUsersService = exports.createUserService = void 0;
-let users = [{
-        id: 1,
-        name: "Sharon",
-        email: "orianna@gmail.com",
-        phone: "1170545821",
-        password: "sole",
-        profilePicture: "img.jpg",
-        active: true,
-        credentialsId: 1
-    },
-    {
-        id: 2,
-        name: "John Doe",
-        email: "john.doe@example.com",
-        phone: "1234567890",
-        password: "securepassword",
-        profilePicture: "profile.jpg",
-        active: true,
-        credentialsId: 2
-    }];
-let credentials = [];
-let id = 1;
+exports.deactivateUserService = exports.getUserByIdService = exports.getUsersService = exports.loginUserService = exports.createUserService = void 0;
+const User_1 = require("../entities/User");
+const Credential_1 = require("../entities/Credential");
+const data_source_1 = require("../config/data-source");
+const data_source_2 = require("../config/data-source");
 const createUserService = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    // Generar credenciales automáticas
-    const username = generateUsername(userData.name);
-    const password = generatePassword();
-    // Crear la credencial y obtener su ID
-    const credentialsId = createCredential(username, password);
-    // Crear el nuevo usuario
-    const newUser = {
-        id,
-        name: userData.name,
-        email: userData.email,
-        phone: userData.phone,
-        password: userData.password,
-        profilePicture: userData.profilePicture,
-        active: userData.active,
-        credentialsId
-    };
-    users.push(newUser);
-    id++;
-    return newUser;
+    const { username, password } = userData, rest = __rest(userData, ["username", "password"]);
+    if (!password) {
+        throw new Error('Password cannot be null or undefined');
+    }
+    return yield data_source_2.AppDataSource.manager.transaction((transactionalEntityManager) => __awaiter(void 0, void 0, void 0, function* () {
+        // Obtener el último valor de inventario
+        const lastUser = yield transactionalEntityManager.createQueryBuilder(User_1.User, 'user')
+            .orderBy('user.inventory', 'DESC')
+            .getOne();
+        const lastInventory = lastUser ? lastUser.inventory : 0;
+        const newInventory = lastInventory + 2;
+        const credentialData = {
+            username: username,
+            password: password
+        };
+        const credential = transactionalEntityManager.create(Credential_1.Credential, credentialData);
+        yield transactionalEntityManager.save(Credential_1.Credential, credential);
+        const newUser = transactionalEntityManager.create(User_1.User, Object.assign(Object.assign({}, rest), { username: username, credential: credential, role: { id: 1 }, active: true, inventory: newInventory }));
+        const createdUser = yield transactionalEntityManager.save(User_1.User, newUser);
+        return createdUser;
+    }));
 });
 exports.createUserService = createUserService;
-// Generar un nombre de usuario basado en el nombre completo
-const generateUsername = (fullName) => {
-    const nameParts = fullName.trim().split(' ');
-    const firstName = nameParts[0].toLowerCase();
-    const lastName = nameParts[nameParts.length - 1].toLowerCase();
-    return `${firstName}.${lastName}`;
-};
-// Generar una contraseña aleatoria
-const generatePassword = () => {
-    // Lógica para generar una contraseña aleatoria
-    return 'password'; // Aquí debes implementar tu lógica real
-};
-// Crear una credencial y obtener su ID
-const createCredential = (username, password) => {
-    const newCredential = {
-        id,
-        username,
-        password
-    };
-    credentials.push(newCredential);
-    id++;
-    return newCredential.id;
-};
+const loginUserService = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const credential = yield data_source_1.CredentialModel.findOne({ where: { username, password }, relations: ['user'] });
+    if (credential && credential.password === password) {
+        return credential.user;
+    }
+    return null;
+});
+exports.loginUserService = loginUserService;
 const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield data_source_1.UserModel.find();
     return users;
 });
 exports.getUsersService = getUsersService;
-const deleteUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    users = users.filter((user) => user.id !== id);
+const getUserByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield data_source_1.UserModel.findOneBy({ id });
+    return user;
 });
-exports.deleteUserService = deleteUserService;
-const getUserByIdService = (id) => {
-    return users.find(user => user.id === id) || null;
-};
 exports.getUserByIdService = getUserByIdService;
-const loginUserService = (loginData) => {
-    const { username, password } = loginData;
-    const credential = credentials.find(c => c.username === username && c.password === password);
-    if (credential) {
-        const user = users.find(u => u.credentialsId === credential.id);
-        return user || null;
+const deactivateUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield data_source_1.UserModel.findOneBy({ id });
+    if (!user) {
+        throw new Error('User not found');
     }
-    else {
-        return null;
-    }
-};
-exports.loginUserService = loginUserService;
-// MI LOGICA NO LA EXPLICADA EN CLASE 
-// Aquí deberías importar tu cliente de base de datos, por ejemplo pg para PostgreSQL
-// const createUser = async (user: IUser): Promise<void> => {
-// Aquí deberías añadir la lógica para guardar el usuario y las credenciales en la base de datos.
-// Por ejemplo, usando pg (node-postgres):
-// const client = new Client();
-// await client.connect();
-// const queryText = 'INSERT INTO usuarios(name, email, phone, password, profilePicture, username) VALUES($1, $2, $3, $4, $5, $6) RETURNING id';
-// const res = await client.query(queryText, [user.name, user.email, user.phone, user.password, user.profilePicture, user.username]);
-// await client.end();
-// const transporter = nodemailer.createTransport(nodemailerConfig);
-// const mailOptions = {
-//   from: process.env.EMAIL,
-//   to: user.email,
-//   subject: 'Registro Exitoso',
-//   text: `Hola ${user.name}, gracias por registrarte.`
-// };
-// await transporter.sendMail(mailOptions);
-// };
-// const getUsers = async (): Promise<IUser[]> => {
-// Aquí deberías añadir la lógica para obtener los usuarios de la base de datos.
-// Por ejemplo, usando pg (node-postgres):
-// const client = new Client();
-// await client.connect();
-// const res = await client.query('SELECT * FROM usuarios');
-// await client.end();
-// return res.rows;
-// return []; // Esto debe ser reemplazado por el resultado real de la base de datos
-// };
-// const deleteUser = async (userId: string): Promise<void> => {
-//   const client = new Client();
-//   await client.connect();
-//   const queryText = 'DELETE FROM usuarios WHERE id = $1';
-//   await client.query(queryText, [userId]);
-//   await client.end();
-// };
-// const updateUser = async (userId: string, updatedUser: IUser): Promise<void> => {
-// const client = new Client();
-// await client.connect();
-// const queryText = 'UPDATE usuarios SET name = $1, email = $2, phone = $3, password = $4, profilePicture = $5, username = $6 WHERE id = $7';
-// await client.query(queryText, [
-//   updatedUser.name,
-//   updatedUser.email,
-//   updatedUser.phone,
-//   updatedUser.password,
-//   updatedUser.profilePicture,
-//   updatedUser.username,
-//   userId
-// ]);
-// await client.end();
-// };
-// export default { createUser, getUsers, deleteUser, updateUser };
+    user.active = false;
+    const updatedUser = yield data_source_1.UserModel.save(user);
+    return updatedUser;
+});
+exports.deactivateUserService = deactivateUserService;

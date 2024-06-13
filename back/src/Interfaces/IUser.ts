@@ -7,10 +7,15 @@ export interface IUser {
   profilePicture: string;
   active: boolean;
   credentialsId: number;
+  roleId: number;
+  styleIds: number[];
+  classIds: number[];
 }
+
 
 export interface ICredential {
   id: number;
   username: string;
   password: string;
+  userId: number;
 }

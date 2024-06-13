@@ -1,25 +1,46 @@
-import { AppointmentDTO } from '../dto/TurnsDto'
+import { Appointment } from '../entities/Appointment';
+import { AppointmentModel } from '../config/data-source';
+import { AppointmentDTO } from '../dto/AppointmentDto';
+import { UserModel } from '../config/data-source';
+import { ClassModel } from '../config/data-source';
 
-// Simula una base de datos en memoria
-const appointments: AppointmentDTO[] = [];
+export const createAppointmentService = async (appointmentData: AppointmentDTO) => {
+    const user = await UserModel.findOneBy({ id: appointmentData.userId });
+    const classEntity = await ClassModel.findOneBy({ id: appointmentData.classId });
 
-export const createAppointment = (appointment: AppointmentDTO): AppointmentDTO => {
-  appointments.push(appointment);
-  return appointment;
+    if (!user || !classEntity) {
+        throw new Error('User or Class not found');
+    }
+
+    const appointment = AppointmentModel.create({
+        ...appointmentData,
+        user,
+        class: classEntity,
+        status: 'active'
+    });
+
+    const newAppointment = await AppointmentModel.save(appointment);
+    return newAppointment;
 };
 
-export const getAppointments = (): AppointmentDTO[] => {
-  return appointments;
+export const getAppointmentsService = async () => {
+    const appointments = await AppointmentModel.find({ relations: ['user', 'class'] });
+    return appointments;
 };
 
-export const cancelAppointment = (id: string): AppointmentDTO | null => {
-  const index = appointments.findIndex(app => app.id === id);
-  if (index !== -1) {
-    const [deletedAppointment] = appointments.splice(index, 1);
-    return deletedAppointment;
-  } else {
-    return null;
-  }
+export const getAppointmentByIdService = async (id: number) => {
+    const appointment = await AppointmentModel.findOne({ where: { id }, relations: ['user', 'class'] });
+    return appointment;
 };
 
-// Puedes exportar más servicios si es necesario
+export const cancelAppointmentService = async (id: number) => {
+    const appointment = await AppointmentModel.findOneBy({ id });
+
+    if (!appointment) {
+        throw new Error('Appointment not found');
+    }
+
+    appointment.status = 'cancelled';
+    const cancelledAppointment = await AppointmentModel.save(appointment);
+    return cancelledAppointment;
+};
