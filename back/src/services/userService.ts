@@ -1,12 +1,13 @@
 // services/userService.ts
-import { UserDTO, CredentialDTO } from "../dto/UserDto";
-import { User } from "../entities/User";
-import { Credential } from "../entities/Credential";
-import { IUser, ICredential } from '../Interfaces/IUser';
-import nodemailer from 'nodemailer';
-import nodemailerConfig from '../config/nodemailerConfig';
-import { UserModel, CredentialModel,RoleModel } from "../config/data-source";
+import { User } from '../entities/User';
+import { Credential } from '../entities/Credential';
+import { UserDTO, CredentialDTO } from '../dto/UserDto';
 import { AppDataSource } from '../config/data-source';
+import UserRepository from '../repositories/UserRepository';
+import CredentialRepository from '../repositories/CredentialRepository';
+
+const userRepository = AppDataSource.getCustomRepository(UserRepository);
+const credentialRepository = AppDataSource.getCustomRepository(CredentialRepository);
 
 export const createUserService = async (userData: UserDTO) => {
   const { username, password, ...rest } = userData;
@@ -16,11 +17,7 @@ export const createUserService = async (userData: UserDTO) => {
   }
 
   return await AppDataSource.manager.transaction(async transactionalEntityManager => {
-    // Obtener el último valor de inventario
-    const lastUser = await transactionalEntityManager.createQueryBuilder(User, 'user')
-      .orderBy('user.inventory', 'DESC')
-      .getOne();
-
+    const lastUser = await userRepository.findLastUser();
     const lastInventory = lastUser ? lastUser.inventory : 0;
     const newInventory = lastInventory + 2;
 
@@ -34,7 +31,7 @@ export const createUserService = async (userData: UserDTO) => {
 
     const newUser = transactionalEntityManager.create(User, {
       ...rest,
-      username: username, // Asegúrate de asignar el nombre de usuario
+      username: username,
       credential: credential,
       role: { id: 1 }, // Asignar automáticamente el rol de estudiante con ID 1
       active: true,
@@ -47,35 +44,24 @@ export const createUserService = async (userData: UserDTO) => {
 };
 
 export const loginUserService = async (username: string, password: string) => {
-  const credential = await CredentialModel.findOne({ where: { username, password }, relations: ['user'] });
+  const credential = await credentialRepository.findOne({ where: { username, password }, relations: ['user'] });
   if (credential && credential.password === password) {
     return credential.user;
   }
   return null;
 };
 
-export const getUsersService = async () =>{
-  const users = await UserModel.find();
+export const getUsersService = async () => {
+  const users = await userRepository.find();
   return users;
 };
 
-
 export const getUserByIdService = async (id: number) => {
-  const user = await UserModel.findOneBy({ id });
+  const user = await userRepository.findById(id);
   return user;
 };
 
 export const deactivateUserService = async (id: number) => {
-  const user = await UserModel.findOneBy({ id });
-
-  if (!user) {
-    throw new Error('User not found');
-  }
-
-  user.active = false;
-  const updatedUser = await UserModel.save(user);
+  const updatedUser = await userRepository.deactivateUser(id);
   return updatedUser;
 };
-
-
-

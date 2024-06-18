@@ -1,6 +1,6 @@
-import { RoleModel } from "../config/data-source";
+import RoleRepository  from "../repositories/RoleRepository";
 
 export const getRolesService = async () => {
-    const roles = await RoleModel.find();
+    const roles = await RoleRepository.find();
     return roles;
 };

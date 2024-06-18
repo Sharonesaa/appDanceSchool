@@ -8,11 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getRolesService = void 0;
-const data_source_1 = require("../config/data-source");
+const RoleRepository_1 = __importDefault(require("../repositories/RoleRepository"));
 const getRolesService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const roles = yield data_source_1.RoleModel.find();
+    const roles = yield RoleRepository_1.default.find();
     return roles;
 });
 exports.getRolesService = getRolesService;

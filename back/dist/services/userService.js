@@ -19,22 +19,26 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivateUserService = exports.getUserByIdService = exports.getUsersService = exports.loginUserService = exports.createUserService = void 0;
+// services/userService.ts
 const User_1 = require("../entities/User");
 const Credential_1 = require("../entities/Credential");
 const data_source_1 = require("../config/data-source");
-const data_source_2 = require("../config/data-source");
+const UserRepository_1 = __importDefault(require("../repositories/UserRepository"));
+const CredentialRepository_1 = __importDefault(require("../repositories/CredentialRepository"));
+const userRepository = data_source_1.AppDataSource.getCustomRepository(UserRepository_1.default);
+const credentialRepository = data_source_1.AppDataSource.getCustomRepository(CredentialRepository_1.default);
 const createUserService = (userData) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = userData, rest = __rest(userData, ["username", "password"]);
     if (!password) {
         throw new Error('Password cannot be null or undefined');
     }
-    return yield data_source_2.AppDataSource.manager.transaction((transactionalEntityManager) => __awaiter(void 0, void 0, void 0, function* () {
-        // Obtener el último valor de inventario
-        const lastUser = yield transactionalEntityManager.createQueryBuilder(User_1.User, 'user')
-            .orderBy('user.inventory', 'DESC')
-            .getOne();
+    return yield data_source_1.AppDataSource.manager.transaction((transactionalEntityManager) => __awaiter(void 0, void 0, void 0, function* () {
+        const lastUser = yield userRepository.findLastUser();
         const lastInventory = lastUser ? lastUser.inventory : 0;
         const newInventory = lastInventory + 2;
         const credentialData = {
@@ -50,7 +54,7 @@ const createUserService = (userData) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.createUserService = createUserService;
 const loginUserService = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const credential = yield data_source_1.CredentialModel.findOne({ where: { username, password }, relations: ['user'] });
+    const credential = yield credentialRepository.findOne({ where: { username, password }, relations: ['user'] });
     if (credential && credential.password === password) {
         return credential.user;
     }
@@ -58,22 +62,17 @@ const loginUserService = (username, password) => __awaiter(void 0, void 0, void 
 });
 exports.loginUserService = loginUserService;
 const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield data_source_1.UserModel.find();
+    const users = yield userRepository.find();
     return users;
 });
 exports.getUsersService = getUsersService;
 const getUserByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield data_source_1.UserModel.findOneBy({ id });
+    const user = yield userRepository.findById(id);
     return user;
 });
 exports.getUserByIdService = getUserByIdService;
 const deactivateUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield data_source_1.UserModel.findOneBy({ id });
-    if (!user) {
-        throw new Error('User not found');
-    }
-    user.active = false;
-    const updatedUser = yield data_source_1.UserModel.save(user);
+    const updatedUser = yield userRepository.deactivateUser(id);
     return updatedUser;
 });
 exports.deactivateUserService = deactivateUserService;

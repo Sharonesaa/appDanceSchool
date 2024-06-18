@@ -17,3 +17,5 @@ export class Credential {
     @JoinColumn({ name: "usuarios_id" })
     user: User;
 }
+
+

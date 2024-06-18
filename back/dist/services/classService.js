@@ -8,22 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivateClassService = exports.updateClassService = exports.getAllClassesService = exports.getClassByIdService = exports.createClassService = void 0;
 const data_source_1 = require("../config/data-source");
-const data_source_2 = require("../config/data-source");
+const ClassRepository_1 = __importDefault(require("../repositories/ClassRepository"));
+const StyleRepository_1 = __importDefault(require("../repositories/StyleRepository"));
+const classRepository = data_source_1.AppDataSource.getCustomRepository(ClassRepository_1.default);
+const styleRepository = data_source_1.AppDataSource.getCustomRepository(StyleRepository_1.default);
 const createClassService = (classData) => __awaiter(void 0, void 0, void 0, function* () {
     const { day, startTime, endTime, price, styleId } = classData;
     console.log(classData);
-    // Obtener el repositorio de la clase y el estilo
-    const classRepository = data_source_1.ClassModel;
-    const styleRepository = data_source_2.StyleModel;
-    // Buscar el estilo por su ID en la base de datos
     const style = yield styleRepository.findOne({ where: { id: styleId } });
     if (!style) {
         throw new Error('Style not found');
     }
-    // Crear una nueva instancia de la clase con el estilo asociado
     const newClass = classRepository.create({
         day,
         startTime,
@@ -31,39 +32,32 @@ const createClassService = (classData) => __awaiter(void 0, void 0, void 0, func
         price,
         style, // Asignar el estilo obtenido de la base de datos
     });
-    // Guardar la nueva instancia de la clase en la base de datos
     yield classRepository.save(newClass);
-    // Devolver la nueva instancia de la clase creada
     return newClass;
 });
 exports.createClassService = createClassService;
 const getClassByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const classInfo = yield data_source_1.ClassModel.findOneBy({ id });
+    const classInfo = yield classRepository.findOne({ where: { id }, relations: ['style'] });
     return classInfo;
 });
 exports.getClassByIdService = getClassByIdService;
 const getAllClassesService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const classes = yield data_source_1.ClassModel.find();
+    const classes = yield classRepository.findActiveClasses();
     return classes;
 });
 exports.getAllClassesService = getAllClassesService;
 const updateClassService = (id, classData) => __awaiter(void 0, void 0, void 0, function* () {
-    const existingClass = yield data_source_1.ClassModel.findOne({ where: { id } });
+    const existingClass = yield classRepository.findOne({ where: { id } });
     if (!existingClass) {
         throw new Error('Class not found');
     }
-    data_source_1.ClassModel.merge(existingClass, classData);
-    const updatedClass = yield data_source_1.ClassModel.save(existingClass);
+    classRepository.merge(existingClass, classData);
+    const updatedClass = yield classRepository.save(existingClass);
     return updatedClass;
 });
 exports.updateClassService = updateClassService;
 const deactivateClassService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const existingClass = yield data_source_1.ClassModel.findOne({ where: { id } });
-    if (!existingClass) {
-        throw new Error('Class not found');
-    }
-    existingClass.active = false;
-    const updatedClass = yield data_source_1.ClassModel.save(existingClass);
+    const updatedClass = yield classRepository.deactivateClassById(id);
     return updatedClass;
 });
 exports.deactivateClassService = deactivateClassService;
