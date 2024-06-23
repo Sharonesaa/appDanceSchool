@@ -1,0 +1,25 @@
+.custom-navbar {
+    background-color: #f8f9fa !important; /* Color de fondo personalizado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  }
+  
+  .custom-navbar .navbar-brand {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .custom-navbar .nav-link {
+    color: #555;
+  }
+  
+  .custom-navbar .nav-link:hover {
+    color: #000;
+  }
+  
+  .custom-navbar .navbar-toggler {
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .custom-navbar .navbar-collapse {
+    justify-content: flex-end;
+  }

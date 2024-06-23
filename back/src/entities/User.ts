@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany, ManyToOne, ManyToMany, JoinTable, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany, ManyToOne, JoinColumn } from "typeorm";
 import { Credential } from './Credential';
 import { Appointment } from './Appointment';
 import { Role } from './Role';
@@ -44,3 +44,4 @@ export class User {
     appointments: Appointment[];
 
 }
+

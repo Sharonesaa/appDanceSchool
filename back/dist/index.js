@@ -3,8 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const server_1 = __importDefault(require("./server"));
 require("reflect-metadata");
+const server_1 = __importDefault(require("./server"));
 // import bodyParser from 'body-parser';
 const envs_1 = require("./config/envs");
 const data_source_1 = require("./config/data-source");

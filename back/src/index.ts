@@ -1,5 +1,5 @@
-import server from './server';
 import "reflect-metadata";
+import server from './server';
 // import bodyParser from 'body-parser';
 
 import { PORT } from './config/envs';
