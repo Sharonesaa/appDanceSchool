@@ -17,8 +17,13 @@ const createAppointment = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const newAppointment = yield (0, appointmentService_ts_1.createAppointmentService)(appointmentData);
         res.status(201).json(newAppointment);
     }
-    catch (error) {
-        res.status(400).json({ message: 'Error creating appointment', error });
+    catch (e) {
+        if (e instanceof Error) {
+            res.status(400).json({ message: 'Error creating appointment', error: e.message });
+        }
+        else {
+            res.status(400).json({ message: 'Unexpected error creating appointment', error: 'Unknown error' });
+        }
     }
 });
 exports.createAppointment = createAppointment;

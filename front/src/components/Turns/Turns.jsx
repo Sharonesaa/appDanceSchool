@@ -1,0 +1,35 @@
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Turn from '../Turn'
+
+function Turns({ turnos }) {
+  return (
+    <div className="container mt-4">
+      <div className="card">
+        <div className="card-header">
+          Mis Turnos
+        </div>
+        <div className="card-body">
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Clase</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {turnos.map(turno => (
+                <Turn key={turno.id} turno={turno} />
+                ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Turns;

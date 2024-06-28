@@ -30,15 +30,13 @@ const Credential_1 = require("../entities/Credential");
 const data_source_1 = require("../config/data-source");
 const UserRepository_1 = __importDefault(require("../repositories/UserRepository"));
 const CredentialRepository_1 = __importDefault(require("../repositories/CredentialRepository"));
-const userRepository = data_source_1.AppDataSource.getCustomRepository(UserRepository_1.default);
-const credentialRepository = data_source_1.AppDataSource.getCustomRepository(CredentialRepository_1.default);
 const createUserService = (userData) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = userData, rest = __rest(userData, ["username", "password"]);
     if (!password) {
         throw new Error('Password cannot be null or undefined');
     }
     return yield data_source_1.AppDataSource.manager.transaction((transactionalEntityManager) => __awaiter(void 0, void 0, void 0, function* () {
-        const lastUser = yield userRepository.findLastUser();
+        const lastUser = yield UserRepository_1.default.findLastUser();
         const lastInventory = lastUser ? lastUser.inventory : 0;
         const newInventory = lastInventory + 2;
         const credentialData = {
@@ -54,7 +52,7 @@ const createUserService = (userData) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.createUserService = createUserService;
 const loginUserService = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const credential = yield credentialRepository.findOne({ where: { username, password }, relations: ['user'] });
+    const credential = yield CredentialRepository_1.default.findOne({ where: { username, password }, relations: ['user'] });
     if (credential && credential.password === password) {
         return credential.user;
     }
@@ -62,17 +60,17 @@ const loginUserService = (username, password) => __awaiter(void 0, void 0, void 
 });
 exports.loginUserService = loginUserService;
 const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield userRepository.find();
+    const users = yield UserRepository_1.default.find();
     return users;
 });
 exports.getUsersService = getUsersService;
 const getUserByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userRepository.findById(id);
+    const user = yield UserRepository_1.default.findById(id);
     return user;
 });
 exports.getUserByIdService = getUserByIdService;
 const deactivateUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const updatedUser = yield userRepository.deactivateUser(id);
+    const updatedUser = yield UserRepository_1.default.deactivateUser(id);
     return updatedUser;
 });
 exports.deactivateUserService = deactivateUserService;

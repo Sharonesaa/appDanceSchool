@@ -1,6 +1,10 @@
+.navbar {
+  height: 4rem;
+}
+
 .custom-navbar {
     background-color: #f8f9fa !important; /* Color de fondo personalizado */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    box-shadow: 0 4px 8px rgba(233, 4, 4, 0.1); /* Sombra */
   }
   
   .custom-navbar .navbar-brand {

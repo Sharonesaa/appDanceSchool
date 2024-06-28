@@ -1,0 +1,30 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .btn {
+    margin-right: 10px;
+  }
+  
+  .card-header {
+    background-color: #003399;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .table thead th {
+    background-color: #f8f9fa;
+    color: #333;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #e9ecef;
+  }
+  
+  .btn-light {
+    border: 1px solid #ccc;
+  }

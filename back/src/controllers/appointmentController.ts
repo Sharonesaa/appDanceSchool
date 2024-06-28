@@ -7,9 +7,13 @@ export const createAppointment = async (req: Request, res: Response) => {
         const appointmentData: AppointmentDTO = req.body;
         const newAppointment = await createAppointmentService(appointmentData);
         res.status(201).json(newAppointment);
-    } catch (error) {
-        res.status(400).json({ message: 'Error creating appointment', error });
-    }
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+          res.status(400).json({ message: 'Error creating appointment', error: e.message });
+        } else {
+          res.status(400).json({ message: 'Unexpected error creating appointment', error: 'Unknown error' });
+        }
+      }
 };
 
 export const getAppointments = async (req: Request, res: Response) => {

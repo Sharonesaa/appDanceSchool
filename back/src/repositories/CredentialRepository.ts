@@ -1,9 +1,9 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { AppDataSource } from '../config/data-source';
 import { Credential } from '../entities/Credential';
 
-@EntityRepository(Credential)
-export class CredentialRepository extends Repository<Credential> {
+const CredentialRepository = AppDataSource.getRepository(Credential).extend({
+
   // Métodos personalizados si son necesarios
-}
+})
 
 export default CredentialRepository;

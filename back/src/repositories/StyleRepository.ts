@@ -1,11 +1,10 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { AppDataSource } from '../config/data-source';
 import { Style } from '../entities/Style';
 
-@EntityRepository(Style)
-export class StyleRepository extends Repository<Style> {
+const StyleRepository = AppDataSource.getRepository(Style).extend({
   async findActiveStyles(): Promise<Style[]> {
     return this.find({ where: { active: true } });
-  }
+  },
 
   async deactivateStyleById(id: number): Promise<Style | null> {
     const style = await this.findOne({ where: { id } });
@@ -15,6 +14,6 @@ export class StyleRepository extends Repository<Style> {
     style.active = false;
     return this.save(style);
   }
-}
+})
 
 export default StyleRepository;

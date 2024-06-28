@@ -1,19 +1,19 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { AppDataSource } from '../config/data-source';
 import { Appointment } from '../entities/Appointment';
 
-@EntityRepository(Appointment)
-export class AppointmentRepository extends Repository<Appointment> {
+const AppointmentRepository = AppDataSource.getRepository(Appointment).extend({
+
   async findActiveAppointments(): Promise<Appointment[]> {
     return this.find({ where: { status: 'active' }, relations: ['user', 'class'] });
-  }
+  },
 
   async findAppointmentsByUserId(userId: number): Promise<Appointment[]> {
     return this.find({ where: { user: { id: userId } }, relations: ['user', 'class'] });
-  }
+  },
 
   async findAppointmentsByClassId(classId: number): Promise<Appointment[]> {
     return this.find({ where: { class: { id: classId } }, relations: ['user', 'class'] });
-  }
+  },
 
   async cancelAppointmentById(id: number): Promise<Appointment | null> {
     const appointment = await this.findOne({ where: { id } });
@@ -23,6 +23,6 @@ export class AppointmentRepository extends Repository<Appointment> {
     appointment.status = 'cancelled';
     return this.save(appointment);
   }
-}
+})
 
 export default AppointmentRepository;

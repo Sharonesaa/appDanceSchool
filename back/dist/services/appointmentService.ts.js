@@ -14,52 +14,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cancelAppointmentService = exports.getAppointmentsByClassService = exports.getAppointmentsByUserService = exports.getAppointmentByIdService = exports.getAppointmentsService = exports.createAppointmentService = void 0;
 const AppointmentRepository_1 = __importDefault(require("../repositories/AppointmentRepository"));
-const data_source_1 = require("../config/data-source");
 const UserRepository_1 = __importDefault(require("../repositories/UserRepository"));
 const ClassRepository_1 = __importDefault(require("../repositories/ClassRepository"));
-const userRepository = data_source_1.AppDataSource.getCustomRepository(UserRepository_1.default);
-const classRepository = data_source_1.AppDataSource.getCustomRepository(ClassRepository_1.default);
-const appointmentRepository = data_source_1.AppDataSource.getCustomRepository(AppointmentRepository_1.default);
 const createAppointmentService = (appointmentData) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userRepository.findOne({ where: { id: appointmentData.userId } });
+    const user = yield UserRepository_1.default.findOne({ where: { id: appointmentData.userId } });
     let classEntity;
     if (appointmentData.classId) {
-        classEntity = yield classRepository.findOne({ where: { id: appointmentData.classId } });
+        classEntity = yield ClassRepository_1.default.findOne({ where: { id: appointmentData.classId } });
     }
     else {
         // Asignar la clase con id igual a 1 por defecto
-        classEntity = yield classRepository.findOne({ where: { id: 1 } });
+        classEntity = yield ClassRepository_1.default.findOne({ where: { id: 1 } });
     }
-    if (!user || !classEntity) {
-        throw new Error('User or Class not found');
+    if (!user) {
+        throw new Error('User not found');
     }
-    const appointment = appointmentRepository.create(Object.assign(Object.assign({}, appointmentData), { user, class: classEntity, status: 'active' }));
-    const newAppointment = yield appointmentRepository.save(appointment);
+    if (!classEntity) {
+        throw new Error('Class not found');
+    }
+    const appointment = AppointmentRepository_1.default.create(Object.assign(Object.assign({}, appointmentData), { user: user, class: classEntity, status: 'active' }));
+    const newAppointment = yield AppointmentRepository_1.default.save(appointment);
     return newAppointment;
 });
 exports.createAppointmentService = createAppointmentService;
 const getAppointmentsService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const appointments = yield appointmentRepository.findActiveAppointments();
+    const appointments = yield AppointmentRepository_1.default.findActiveAppointments();
     return appointments;
 });
 exports.getAppointmentsService = getAppointmentsService;
 const getAppointmentByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const appointment = yield appointmentRepository.findOne({ where: { id }, relations: ['user', 'class'] });
+    const appointment = yield AppointmentRepository_1.default.findOne({ where: { id }, relations: ['user', 'class'] });
     return appointment;
 });
 exports.getAppointmentByIdService = getAppointmentByIdService;
 const getAppointmentsByUserService = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const appointments = yield appointmentRepository.findAppointmentsByUserId(userId);
+    const appointments = yield AppointmentRepository_1.default.findAppointmentsByUserId(userId);
     return appointments;
 });
 exports.getAppointmentsByUserService = getAppointmentsByUserService;
 const getAppointmentsByClassService = (classId) => __awaiter(void 0, void 0, void 0, function* () {
-    const appointments = yield appointmentRepository.findAppointmentsByClassId(classId);
+    const appointments = yield AppointmentRepository_1.default.findAppointmentsByClassId(classId);
     return appointments;
 });
 exports.getAppointmentsByClassService = getAppointmentsByClassService;
 const cancelAppointmentService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const cancelledAppointment = yield appointmentRepository.cancelAppointmentById(id);
+    const cancelledAppointment = yield AppointmentRepository_1.default.cancelAppointmentById(id);
     return cancelledAppointment;
 });
 exports.cancelAppointmentService = cancelAppointmentService;

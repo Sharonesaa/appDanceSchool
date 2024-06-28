@@ -1,8 +1,9 @@
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import styles from './Navbar.module.css';
 
 function CustomNavbar() {
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar className={styles.navbar} bg="light" expand="lg">
       <Container>
         <Navbar.Brand href="#">
           <img
@@ -16,8 +17,9 @@ function CustomNavbar() {
             <Nav.Link href="#">Inicio</Nav.Link>
             <Nav.Link href="#">Quienes Somos</Nav.Link>
             <Nav.Link href="#">Packs</Nav.Link>
+            <Nav.Link href="#">Eventos</Nav.Link>
             <Nav.Link href="#">Ayuda</Nav.Link>
-            <Nav.Link href="#">Mi cuenta</Nav.Link>
+            <Nav.Link href="#">onLogout</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

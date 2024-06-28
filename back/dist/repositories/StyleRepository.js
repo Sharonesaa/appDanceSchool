@@ -1,10 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -15,15 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StyleRepository = void 0;
-const typeorm_1 = require("typeorm");
+const data_source_1 = require("../config/data-source");
 const Style_1 = require("../entities/Style");
-let StyleRepository = class StyleRepository extends typeorm_1.Repository {
+const StyleRepository = data_source_1.AppDataSource.getRepository(Style_1.Style).extend({
     findActiveStyles() {
         return __awaiter(this, void 0, void 0, function* () {
             return this.find({ where: { active: true } });
         });
-    }
+    },
     deactivateStyleById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const style = yield this.findOne({ where: { id } });
@@ -34,9 +27,5 @@ let StyleRepository = class StyleRepository extends typeorm_1.Repository {
             return this.save(style);
         });
     }
-};
-exports.StyleRepository = StyleRepository;
-exports.StyleRepository = StyleRepository = __decorate([
-    (0, typeorm_1.EntityRepository)(Style_1.Style)
-], StyleRepository);
+});
 exports.default = StyleRepository;

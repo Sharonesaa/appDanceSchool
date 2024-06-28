@@ -1,0 +1,58 @@
+/* Form.module.css */
+.login-form {
+    max-width: 300px;
+    margin: auto;
+    padding: 40px;
+    background-color: rgba(0, 0, 0, 0.123);
+    border-radius: 10px;
+    margin-top: 2%;
+    color: #000000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.459);
+  }
+  
+  .login-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .form-control::placeholder {
+    color: #bbb;
+  }
+  
+  .form-text {
+    font-size: 12px;
+    color: #888;
+  }
+  
+  .form-check-input {
+    margin-right: 10px;
+  }
+  
+  
+  .btn-primary {
+    width: 100%;
+    padding: 10px;
+    background-color: #e50914;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .btn-primary:hover {
+    background-color: #f6121d;
+  }

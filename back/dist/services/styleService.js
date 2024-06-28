@@ -13,37 +13,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivateStyleService = exports.deleteStyleService = exports.updateStyleService = exports.getStyleByIdService = exports.getStylesService = exports.createStyleService = void 0;
-const data_source_1 = require("../config/data-source");
 const StyleRepository_1 = __importDefault(require("../repositories/StyleRepository"));
-const styleRepository = data_source_1.AppDataSource.getCustomRepository(StyleRepository_1.default);
 const createStyleService = (styleData) => __awaiter(void 0, void 0, void 0, function* () {
     styleData.active = true;
-    const newStyle = yield styleRepository.save(styleData);
+    const newStyle = yield StyleRepository_1.default.save(styleData);
     return newStyle;
 });
 exports.createStyleService = createStyleService;
 const getStylesService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const styles = yield styleRepository.findActiveStyles();
+    const styles = yield StyleRepository_1.default.findActiveStyles();
     return styles;
 });
 exports.getStylesService = getStylesService;
 const getStyleByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const style = yield styleRepository.findOne({ where: { id } });
+    const style = yield StyleRepository_1.default.findOne({ where: { id } });
     return style;
 });
 exports.getStyleByIdService = getStyleByIdService;
 const updateStyleService = (id, styleData) => __awaiter(void 0, void 0, void 0, function* () {
-    yield styleRepository.update(id, styleData);
-    const updatedStyle = yield styleRepository.findOne({ where: { id } });
+    yield StyleRepository_1.default.update(id, styleData);
+    const updatedStyle = yield StyleRepository_1.default.findOne({ where: { id } });
     return updatedStyle;
 });
 exports.updateStyleService = updateStyleService;
 const deleteStyleService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    yield styleRepository.delete(id);
+    yield StyleRepository_1.default.delete(id);
 });
 exports.deleteStyleService = deleteStyleService;
 const deactivateStyleService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const updatedStyle = yield styleRepository.deactivateStyleById(id);
+    const updatedStyle = yield StyleRepository_1.default.deactivateStyleById(id);
     return updatedStyle;
 });
 exports.deactivateStyleService = deactivateStyleService;

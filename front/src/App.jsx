@@ -1,15 +1,32 @@
+import { useState } from 'react'
 import './App.css'
-import Home from './views/home'
-import Form from './components/Form/Form'
+import Home from './views/Home/Home';
+import Dahsboard from './views/Dahsboard/Dahsboard';
 
 function App() {
+  const[isLogin, setIsLogin] = useState (false);
+  const [user, setUser] = useState(null);
+
+  
+  const handleLogin = (user) => {
+    setIsLogin(true);
+    setUser(user);
+  };
+
+  const onLogout = () => {
+    setIsLogin(false);
+    setUser(null);
+  };
 
   return (
     <>
-    {/* HOME VIEW*/}
-      <Home/>
+      {!isLogin ? (
+        <Home title="Login" handleLogin={handleLogin} />
+      ) : (
+        <Dahsboard onLogout={onLogout} user={user} />
+      )}
     </>
-  )
+  );
 }
 
 export default App

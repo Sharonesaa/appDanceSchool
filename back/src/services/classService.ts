@@ -5,20 +5,18 @@ import { AppDataSource } from '../config/data-source';
 import ClassRepository from '../repositories/ClassRepository';
 import StyleRepository from '../repositories/StyleRepository';
 
-const classRepository = AppDataSource.getCustomRepository(ClassRepository);
-const styleRepository = AppDataSource.getCustomRepository(StyleRepository);
 
 export const createClassService = async (classData: any) => {
   const { day, startTime, endTime, price, styleId } = classData;
   console.log(classData);
 
-  const style = await styleRepository.findOne({ where: { id: styleId } });
+  const style = await StyleRepository.findOne({ where: { id: styleId } });
 
   if (!style) {
     throw new Error('Style not found');
   }
 
-  const newClass = classRepository.create({
+  const newClass = ClassRepository.create({
     day,
     startTime,
     endTime,
@@ -26,32 +24,32 @@ export const createClassService = async (classData: any) => {
     style, // Asignar el estilo obtenido de la base de datos
   });
 
-  await classRepository.save(newClass);
+  await ClassRepository.save(newClass);
   return newClass;
 };
 
 export const getClassByIdService = async (id: number) => {
-  const classInfo = await classRepository.findOne({ where: { id }, relations: ['style'] });
+  const classInfo = await ClassRepository.findOne({ where: { id }, relations: ['style'] });
   return classInfo;
 };
 
 export const getAllClassesService = async (): Promise<Class[]> => {
-  const classes = await classRepository.findActiveClasses();
+  const classes = await ClassRepository.findActiveClasses();
   return classes;
 };
 
 export const updateClassService = async (id: number, classData: ClassDTO): Promise<Class | undefined> => {
-  const existingClass = await classRepository.findOne({ where: { id } });
+  const existingClass = await ClassRepository.findOne({ where: { id } });
   if (!existingClass) {
     throw new Error('Class not found');
   }
 
-  classRepository.merge(existingClass, classData);
-  const updatedClass = await classRepository.save(existingClass);
+  ClassRepository.merge(existingClass, classData);
+  const updatedClass = await ClassRepository.save(existingClass);
   return updatedClass;
 };
 
 export const deactivateClassService = async (id: number): Promise<Class | null> => {
-  const updatedClass = await classRepository.deactivateClassById(id);
+  const updatedClass = await ClassRepository.deactivateClassById(id);
   return updatedClass;
 };

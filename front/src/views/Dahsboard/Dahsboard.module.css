@@ -1,9 +1,9 @@
 .container {
-    background-image: url('../imagen/kadenza.png'); /* Reemplaza con la URL de tu imagen */
+    /* background-image: Reemplaza con la URL de tu imagen */
     background-size: cover;
     background-position: center;
     height: 100vh;
-    display: flex;
+    display: block;
     flex-direction: column;
     justify-content: center;
     align-items: center;
