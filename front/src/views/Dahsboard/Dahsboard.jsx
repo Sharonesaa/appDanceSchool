@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../../components/Navbar/Navbar';
 import Turns from '../../components/Turns/Turns';
@@ -8,17 +9,24 @@ const { container, content } = styles;
 
 function Dahsboard({ onLogout, user }) {
   const [turns, setTurns] = useState([]);
+  
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const URL = `http://localhost:3000/turns/${user.id}`;
-    axios.get(URL).then(resp => {
-        // Si la respuesta es un objeto, lo convierte en un array
-        const data = Array.isArray(resp.data) ? resp.data : [resp.data];
-        setTurns(data);
-    }).catch(error => {
+  useEffect(()=>{
+    if (!user){
+      navigate('/');
+    } else {
+      console.log(user)
+      const URL = `http://localhost:3000/turns/${user.id}`;
+      axios.get(URL).then(resp => {
+          // Si la respuesta es un objeto, lo convierte en un array
+          const data = Array.isArray(resp.data) ? resp.data : [resp.data];
+          setTurns(data);
+        }).catch(error => {
         console.error("There was an error fetching the turns!", error);
-    });
-  }, [user]);
+      });
+    }
+  }, [user, navigate, setTurns]);
 
   return (
     <div className={container}>

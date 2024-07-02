@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useState } from 'react'
 import axios from 'axios';
-import styles from './Form.module.css';
+import styles from './Login.module.css';
 
-function Form({ title, handleLogin }) {
+function Login({ title, handleLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -46,8 +47,9 @@ function Form({ title, handleLogin }) {
         Submit
       </button>
       {error && <p>{error}</p>}
+      <p className='texte-center'>Not a member?<Link to ='Register'>Register </Link></p>
     </form>
   );
 }
 
-export default Form;
+export default Login;

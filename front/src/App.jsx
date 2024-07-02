@@ -1,32 +1,51 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import './App.css'
 import Home from './views/Home/Home';
 import Dahsboard from './views/Dahsboard/Dahsboard';
+import RegisterView from './views/Register/Register';
+
 
 function App() {
-  const[isLogin, setIsLogin] = useState (false);
-  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
 
-  
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    if (userData)navigate('/dashboard');
+  },[userData])
+
   const handleLogin = (user) => {
-    setIsLogin(true);
-    setUser(user);
+    setUserData(user);
   };
 
   const onLogout = () => {
-    setIsLogin(false);
-    setUser(null);
+    setUserData(null);
   };
 
   return (
     <>
-      {!isLogin ? (
-        <Home title="Login" handleLogin={handleLogin} />
-      ) : (
-        <Dahsboard onLogout={onLogout} user={user} />
-      )}
+    <Routes>
+
+      {/* {LOGIN} */}
+      <Route path='/' exact element = {<Home handleLogin={handleLogin} />}/>
+
+      {/* {REGISTER} */}
+      <Route path='/register' element = {
+        <RegisterView/>
+      }/>
+
+      {/* {DASHBOARD} */}
+      <Route path='/dashboard' element = {
+        <Dahsboard onLogout={onLogout} user={userData} />}/>
+
+      {/* {SCHEDULE APP} */}
+
+      {/* {LOGIN} */}
+
+    </Routes>
     </>
-  );
+  )
 }
 
 export default App

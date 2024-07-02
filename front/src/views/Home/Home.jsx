@@ -1,9 +1,9 @@
-import Form from "../../components/Form/Form";
+import Login from "../../components/Login/Login";
 import Navbar from "../../components/Navbar/Navbar";
 import styles from './Home.module.css'
 const {container, content} = styles;
 
-function Home({title, handleLogin}) {
+function Home({handleLogin}) {
   return (
     <div className = {container}>
       <Navbar />
@@ -12,7 +12,7 @@ function Home({title, handleLogin}) {
         <p>Explora nuestras clases y eventos.</p>
       </div>
       <div>
-        <Form title={title} handleLogin= {handleLogin}/>
+        <Login title= "Login" handleLogin= {handleLogin}/>
       </div>
     </div>
   );

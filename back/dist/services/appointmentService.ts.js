@@ -43,7 +43,7 @@ const getAppointmentsService = () => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getAppointmentsService = getAppointmentsService;
 const getAppointmentByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const appointment = yield AppointmentRepository_1.default.findOne({ where: { id }, relations: ['user', 'class'] });
+    const appointment = yield AppointmentRepository_1.default.findOne({ where: { id }, relations: ['user', 'class', 'class.style'] });
     return appointment;
 });
 exports.getAppointmentByIdService = getAppointmentByIdService;
