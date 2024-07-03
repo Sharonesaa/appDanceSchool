@@ -17,6 +17,8 @@ const server_1 = __importDefault(require("./server"));
 const envs_1 = require("./config/envs");
 const data_source_1 = require("./config/data-source");
 const RoleRepository_1 = __importDefault(require("./repositories/RoleRepository"));
+const StyleRepository_1 = __importDefault(require("./repositories/StyleRepository"));
+const ClassRepository_1 = __importDefault(require("./repositories/ClassRepository"));
 function initializeDatabase() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -26,19 +28,47 @@ function initializeDatabase() {
             const roleCount = yield RoleRepository_1.default.count();
             if (roleCount === 0) {
                 const initialRole = RoleRepository_1.default.create({
-                    id: 1,
                     name: 'ESTUDIANTE',
                     active: true,
                 });
                 yield RoleRepository_1.default.save(initialRole);
                 console.log("Initial role has been created.");
             }
+            // Crear estilos iniciales si no existen
+            const styleCount = yield StyleRepository_1.default.count();
+            if (styleCount === 0) {
+                const initialStylesData = [
+                    { name: 'salsa lady style 1', description: 'salsa en 1' },
+                    { name: 'mambo', description: 'salsa en 2' },
+                    { name: 'Stretching', description: 'Flexibilidad' }
+                ];
+                const initialStyles = initialStylesData.map(styleData => StyleRepository_1.default.create(styleData));
+                yield StyleRepository_1.default.save(initialStyles);
+                console.log("Initial styles have been created.");
+            }
+            // Obtener los estilos desde la base de datos
+            const styles = yield Promise.all([
+                StyleRepository_1.default.findOneOrFail({ where: { name: 'salsa lady style 1' } }),
+                StyleRepository_1.default.findOneOrFail({ where: { name: 'mambo' } }),
+                StyleRepository_1.default.findOneOrFail({ where: { name: 'Stretching' } }),
+            ]);
+            // Crear clases iniciales si no existen
+            const classCount = yield ClassRepository_1.default.count();
+            if (classCount === 0) {
+                const initialClasses = [
+                    { day: 'lunes', startTime: '09:00', endTime: '12:00', price: 4500, style: styles[0] },
+                    { day: 'martes', startTime: '09:00', endTime: '12:00', price: 5500, style: styles[1] },
+                    { day: 'viernes', startTime: '09:00', endTime: '12:00', price: 5000, style: styles[2] },
+                ];
+                yield ClassRepository_1.default.save(initialClasses);
+                console.log("Initial classes have been created.");
+            }
             server_1.default.listen(envs_1.PORT, () => {
                 console.log(`Server is running on port ${envs_1.PORT}`);
             });
         }
         catch (err) {
-            console.error("Error durante la inicialización de la fuente de datos", err);
+            console.error("Error during data source initialization", err);
         }
     });
 }

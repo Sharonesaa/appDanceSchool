@@ -1,0 +1,32 @@
+.container {
+    /* background-image: Reemplaza con la URL de tu imagen */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+  }
+  
+  .content {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .buttonSmall {
+    padding: 8px 16px; /* Ajusta el padding según el tamaño deseado */
+    font-size: 14px; /* Tamaño de la fuente */
+    background-color: #007bff; /* Color de fondo del botón */
+    color: #ffffff; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+  }
+  
+  .buttonSmall:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el cursor */
+  }

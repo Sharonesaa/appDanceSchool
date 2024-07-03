@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import styles from './Home.module.css'
 const {container, content} = styles;
 
-function Home({handleLogin}) {
+function Home() {
   return (
     <div className = {container}>
       <Navbar />
@@ -12,7 +12,7 @@ function Home({handleLogin}) {
         <p>Explora nuestras clases y eventos.</p>
       </div>
       <div>
-        <Login title= "Login" handleLogin= {handleLogin}/>
+        <Login title= "Login" />
       </div>
     </div>
   );

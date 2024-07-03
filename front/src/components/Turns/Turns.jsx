@@ -1,8 +1,11 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Turn from '../Turn'
+import Turn from '../Turn';
 
 function Turns({ turnos }) {
+  // Si turnos no es un array, usa un array vacío en su lugar
+  const turnosArray = Array.isArray(turnos) ? turnos : [];
+
   return (
     <div className="container mt-4">
       <div className="card">
@@ -21,9 +24,9 @@ function Turns({ turnos }) {
               </tr>
             </thead>
             <tbody>
-              {turnos.map(turno => (
+              {turnosArray.map(turno => (
                 <Turn key={turno.id} turno={turno} />
-                ))}
+              ))}
             </tbody>
           </table>
         </div>

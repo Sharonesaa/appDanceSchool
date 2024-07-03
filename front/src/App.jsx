@@ -1,34 +1,29 @@
 import { useEffect, useState } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
 import './App.css'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import Home from './views/Home/Home';
-import Dahsboard from './views/Dahsboard/Dahsboard';
+import Dashboard from './views/Dahsboard/Dashboard';
 import RegisterView from './views/Register/Register';
+import { useSelector } from 'react-redux'
+import ScheduleView from './views/Schedule/Schedule';
 
-
-function App() {
-  const [userData, setUserData] = useState(null);
-
-  const navigate = useNavigate()
+function App(){
+  const login = useSelector((state)=>state.user.login);
+  const navigate = useNavigate();
 
   useEffect(()=>{
-    if (userData)navigate('/dashboard');
-  },[userData])
-
-  const handleLogin = (user) => {
-    setUserData(user);
-  };
-
-  const onLogout = () => {
-    setUserData(null);
-  };
+    if(login)navigate('/dashboard');
+    else navigate('/')
+  }, [login]);
 
   return (
     <>
     <Routes>
 
       {/* {LOGIN} */}
-      <Route path='/' exact element = {<Home handleLogin={handleLogin} />}/>
+      <Route path='/' exact element = {
+        <Home/>
+      }/>
 
       {/* {REGISTER} */}
       <Route path='/register' element = {
@@ -37,11 +32,15 @@ function App() {
 
       {/* {DASHBOARD} */}
       <Route path='/dashboard' element = {
-        <Dahsboard onLogout={onLogout} user={userData} />}/>
+        <Dashboard/>
+      }/>
 
       {/* {SCHEDULE APP} */}
 
-      {/* {LOGIN} */}
+      <Route path='/schedule' element={
+        <ScheduleView/>
+      } />
+
 
     </Routes>
     </>

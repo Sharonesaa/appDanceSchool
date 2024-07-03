@@ -27,6 +27,7 @@ export class Class {
     appointments: Appointment[];
     
     @ManyToOne(() => Style, style => style.classes)
+    @JoinColumn({ name: 'styleId' }) // Asegúrate de especificar el nombre de la columna si es diferente al nombre por defecto
     style: Style;
-    styleId: number; // Agrega esta línea para la propiedad styleId
-  }
+
+}

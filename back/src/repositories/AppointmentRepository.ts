@@ -8,7 +8,7 @@ const AppointmentRepository = AppDataSource.getRepository(Appointment).extend({
   },
 
   async findAppointmentsByUserId(userId: number): Promise<Appointment[]> {
-    return this.find({ where: { user: { id: userId } }, relations: ['user', 'class'] });
+    return this.find({ where: { user: { id: userId } }, relations: ['user', 'class', 'class.style'] });
   },
 
   async findAppointmentsByClassId(classId: number): Promise<Appointment[]> {

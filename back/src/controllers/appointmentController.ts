@@ -35,7 +35,7 @@ export const getAppointmentById = async (req: Request, res: Response) => {
       if (appointment) {
           res.status(200).json(appointment);
       } else {
-          res.status(404).json({ message: 'Appointment not found' });
+          res.status(201).json({ message: 'Usuario sin turnos' });
       }
   } catch (error) {
       res.status(500).json({ message: 'Error fetching appointment', error });

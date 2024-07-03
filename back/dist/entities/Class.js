@@ -46,6 +46,8 @@ __decorate([
 ], Class.prototype, "appointments", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Style_1.Style, style => style.classes),
+    (0, typeorm_1.JoinColumn)({ name: 'styleId' }) // Asegúrate de especificar el nombre de la columna si es diferente al nombre por defecto
+    ,
     __metadata("design:type", Style_1.Style)
 ], Class.prototype, "style", void 0);
 exports.Class = Class = __decorate([

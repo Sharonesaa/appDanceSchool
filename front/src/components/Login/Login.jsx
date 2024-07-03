@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useState } from 'react'
 import axios from 'axios';
 import styles from './Login.module.css';
+import { login } from '../../redux/userReducer';
 
-function Login({ title, handleLogin }) {
+function Login({ title }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3000/users/login', { username, password });
       if (response.data.login) {
-        handleLogin(response.data.user);
+        dispatch(login(response.data));
       } else {
         setError('Invalid credentials');
       }

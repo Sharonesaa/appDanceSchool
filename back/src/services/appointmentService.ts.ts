@@ -9,10 +9,10 @@ export const createAppointmentService = async (appointmentData: AppointmentDTO) 
   let classEntity;
   
   if (appointmentData.classId) {
-    classEntity = await ClassRepository.findOne({ where: { id: appointmentData.classId } });
+    classEntity = await ClassRepository.findOne({ where: { id: appointmentData.classId }, relations: ['style']});
   } else {
     // Asignar la clase con id igual a 1 por defecto
-    classEntity = await ClassRepository.findOne({ where: { id: 1 } });
+    classEntity = await ClassRepository.findOne({ where: { id: 1 }, relations: ['style'] });
   }
   
   if (!user) {
@@ -39,12 +39,12 @@ export const getAppointmentsService = async () => {
   return appointments;
 };
 
-export const getAppointmentByIdService = async (id: number) => {
-  const appointment = await AppointmentRepository.findOne({ where: { id }, relations: ['user', 'class', 'class.style'] });
-  return appointment;
-};
+// export const getAppointmentByIdService = async (id: number) => {
+//   const appointment = await AppointmentRepository.findOne({ where: { id }, relations: ['user', 'class', 'class.style'] });
+//   return appointment;
+// };
 
-export const getAppointmentsByUserService = async (userId: number) => {
+export const getAppointmentByIdService = async (userId: number) => {
   const appointments = await AppointmentRepository.findAppointmentsByUserId(userId);
   return appointments;
 };
