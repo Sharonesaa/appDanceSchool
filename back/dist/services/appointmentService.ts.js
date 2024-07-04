@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancelAppointmentService = exports.getAppointmentsByClassService = exports.getAppointmentsByUserService = exports.getAppointmentByIdService = exports.getAppointmentsService = exports.createAppointmentService = void 0;
+exports.cancelAppointmentService = exports.getAppointmentsByClassService = exports.getAppointmentByIdService = exports.getAppointmentsService = exports.createAppointmentService = void 0;
 const AppointmentRepository_1 = __importDefault(require("../repositories/AppointmentRepository"));
 const UserRepository_1 = __importDefault(require("../repositories/UserRepository"));
 const ClassRepository_1 = __importDefault(require("../repositories/ClassRepository"));
@@ -20,11 +20,11 @@ const createAppointmentService = (appointmentData) => __awaiter(void 0, void 0, 
     const user = yield UserRepository_1.default.findOne({ where: { id: appointmentData.userId } });
     let classEntity;
     if (appointmentData.classId) {
-        classEntity = yield ClassRepository_1.default.findOne({ where: { id: appointmentData.classId } });
+        classEntity = yield ClassRepository_1.default.findOne({ where: { id: appointmentData.classId }, relations: ['style'] });
     }
     else {
         // Asignar la clase con id igual a 1 por defecto
-        classEntity = yield ClassRepository_1.default.findOne({ where: { id: 1 } });
+        classEntity = yield ClassRepository_1.default.findOne({ where: { id: 1 }, relations: ['style'] });
     }
     if (!user) {
         throw new Error('User not found');
@@ -42,16 +42,15 @@ const getAppointmentsService = () => __awaiter(void 0, void 0, void 0, function*
     return appointments;
 });
 exports.getAppointmentsService = getAppointmentsService;
-const getAppointmentByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const appointment = yield AppointmentRepository_1.default.findOne({ where: { id }, relations: ['user', 'class', 'class.style'] });
-    return appointment;
-});
-exports.getAppointmentByIdService = getAppointmentByIdService;
-const getAppointmentsByUserService = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+// export const getAppointmentByIdService = async (id: number) => {
+//   const appointment = await AppointmentRepository.findOne({ where: { id }, relations: ['user', 'class', 'class.style'] });
+//   return appointment;
+// };
+const getAppointmentByIdService = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const appointments = yield AppointmentRepository_1.default.findAppointmentsByUserId(userId);
     return appointments;
 });
-exports.getAppointmentsByUserService = getAppointmentsByUserService;
+exports.getAppointmentByIdService = getAppointmentByIdService;
 const getAppointmentsByClassService = (classId) => __awaiter(void 0, void 0, void 0, function* () {
     const appointments = yield AppointmentRepository_1.default.findAppointmentsByClassId(classId);
     return appointments;

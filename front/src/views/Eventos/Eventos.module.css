@@ -1,0 +1,58 @@
+.container {
+  background-color: black;
+  min-height: 100vh;
+  display: block;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  text-align: center;
+  color: rgb(255, 251, 251);
+  margin-top: 2%; 
+}
+
+.eventGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+.card {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  overflow: hidden;
+  width: 300px;
+  color: white;
+  text-align: left;
+}
+
+.cardImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.cardContent {
+  padding: 20px;
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.cardDate {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+.cardDescription {
+  font-size: 1rem;
+  margin-top: 10px;
+}

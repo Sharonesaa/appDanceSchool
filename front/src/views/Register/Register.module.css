@@ -1,5 +1,5 @@
 .container {
-    /* background-image: Reemplaza con la URL de tu imagen */
+    background-image: url('/register.jpg');
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -11,8 +11,4 @@
     text-align: center;
   }
   
-  .content {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 10px;
-  }
+ 

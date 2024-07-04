@@ -1,9 +1,9 @@
 .navbar {
-  height: 4rem;
+  height: 3rem;
 }
 
 .custom-navbar {
-    background-color: #f8f9fa !important; /* Color de fondo personalizado */
+    background-color: #f8f9fa2a !important; /* Color de fondo personalizado */
     box-shadow: 0 4px 8px rgba(233, 4, 4, 0.1); /* Sombra */
   }
   
@@ -18,6 +18,7 @@
   
   .custom-navbar .nav-link:hover {
     color: #000;
+   
   }
   
   .custom-navbar .navbar-toggler {

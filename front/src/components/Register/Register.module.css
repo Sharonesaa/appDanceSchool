@@ -1,5 +1,5 @@
 .register-form {
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.432);
     padding: 60px 68px 40px;
     margin: auto;
     max-width: 450px;
@@ -53,3 +53,10 @@
     font-size: 14px;
     margin-top: 20px;
   }
+
+  .noSpinner::-webkit-outer-spin-button,
+.noSpinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+

@@ -22,6 +22,8 @@ function Login({ title }) {
       }
     } catch (err) {
       setError('Error during login');
+      setUsername(''); // Reiniciar el estado del username
+      setPassword(''); // Reiniciar el estado del password
     }
   };
 
@@ -48,8 +50,8 @@ function Login({ title }) {
       <button type="submit" className="btn btn-primary">
         Submit
       </button>
-      {error && <p>{error}</p>}
-      <p className='texte-center'>Not a member?<Link to ='Register'>Register </Link></p>
+      {error && <p className="error-message" style={{ color: 'white' }}>{error}</p>}
+      <p className='texte-center'style={{ color: 'white' }} >Not a member?<Link to ='Register'>Register </Link></p>
     </form>
   );
 }

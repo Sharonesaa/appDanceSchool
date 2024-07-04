@@ -70,6 +70,8 @@ function ScheduleApp() {
               id="clase"
               name="clase"
               value={clase}
+              min ="1"
+              max="3"
               onChange={(e) => setClase(e.target.value)}
               required
             />

@@ -19,7 +19,7 @@ const AppointmentRepository = data_source_1.AppDataSource.getRepository(Appointm
     },
     findAppointmentsByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.find({ where: { user: { id: userId } }, relations: ['user', 'class'] });
+            return this.find({ where: { user: { id: userId } }, relations: ['user', 'class', 'class.style'] });
         });
     },
     findAppointmentsByClassId(classId) {

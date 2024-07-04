@@ -1,5 +1,5 @@
 .container {
-    /* background-image: Reemplaza con la URL de tu imagen */
+    background-image: url('/main.JPEG');
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -9,10 +9,18 @@
     align-items: center;
     color: white;
     text-align: center;
+    margin-top: 4%;
   }
   
   .content {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 20px;
+    background: rgba(0, 0, 0, 0.308);
+    padding: 10px;
     border-radius: 10px;
+    margin-bottom: 7%;
+  }
+
+  .navbarContainer {
+    width: 100%;
+    position: absolute;
+    top: 0;
   }
