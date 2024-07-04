@@ -1,2 +1,6 @@
 node_modules
+back/src/uploads/*
 .env
+
+!back/src/uploads/
+!back/src/uploads/.gitkeep
