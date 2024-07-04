@@ -1,22 +1,39 @@
 // controllers/userController.ts
 import { Request, Response } from 'express';
 import { createUserService, getUsersService, getUserByIdService, deactivateUserService, loginUserService } from '../services/userService';
-import { UserDTO, CredentialDTO } from '../dto/UserDto';
-import { Console } from 'console';
+import { UserDTO } from '../dto/UserDto';
+import multer from 'multer';
 
-export const createUser = async (req: Request, res: Response) => {
-  try {
-    const userData: UserDTO = req.body;
-    const newUser = await createUserService(userData);
-    res.status(201).json({
-      message: 'User created successfully',
-      user: newUser
-    });
-  } catch (error) {
-    res.status(400).json({ message: 'Error creating user',error });
-    console.error('Error during transaction:', error);
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'src/uploads/'); // Carpeta donde se guardarán las imágenes
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
   }
-};
+});
+
+const upload = multer({ storage: storage });
+
+export const createUser = [
+  upload.single('profilePicture'),
+  async (req: Request, res: Response) => {
+    try {
+      const userData: UserDTO = req.body;
+      const profilePicture = req.file ? req.file.path : '';
+      userData.profilePicture = profilePicture; // Almacenar el path de la imagen
+
+      const newUser = await createUserService(userData);
+      res.status(201).json({
+        message: 'User created successfully',
+        user: newUser
+      });
+    } catch (error) {
+      res.status(400).json({ message: 'Error creating user', error });
+      console.error('Error during transaction:', error);
+    }
+  }
+];
 
 
 export const getUsers = async (req: Request, res: Response) => {

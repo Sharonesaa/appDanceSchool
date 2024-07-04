@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react'
+import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './Register.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +12,10 @@ function Register({ title }) {
     const [password, setPassword] = useState('');
     const [profilePicture, setProfilePicture] = useState(null);
     const [error, setError] = useState('');
+
+    const handleFileChange = (e) => {
+      setProfilePicture(e.target.files[0]);
+    };
   
     const navigate = useNavigate()
 
@@ -26,10 +29,10 @@ function Register({ title }) {
           setError('La contraseña debe tener al menos 8 caracteres.');
           return;
       }
-      if (!profilePicture.endsWith('.jpg')) {
-          setError('La foto de perfil debe ser un archivo .jpg.');
-          return;
-      }
+      // if (!profilePicture.endsWith('.jpg')) {
+      //     setError('La foto de perfil debe ser un archivo .jpg.');
+      //     return;
+      // } // ahora es una file no un str
       if (nDni.length < 5) {
           setError('Ingrese un DNI válido de al menos 5 dígitos.');
           return;
@@ -39,15 +42,23 @@ function Register({ title }) {
       setError('');
 
       try {
-          const response = await axios.post('http://localhost:3000/user/register', { 
-              name, 
-              email, 
-              birthdate, 
-              nDni, 
-              username, 
-              password, 
-              profilePicture 
-          });
+        const response = await axios.post(
+          'http://localhost:3000/user/register', 
+          { 
+            name, 
+            email, 
+            birthdate, 
+            nDni, 
+            username, 
+            password, 
+            profilePicture 
+          },
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        );
           
           if (response.data.user) {
               console.log(response.data);
@@ -121,11 +132,10 @@ function Register({ title }) {
         </div>
         <div className="form-group mb-3">
           <input
-            type="text"
+            type="file"
             className="form-control"
             placeholder="Profile Picture URL"
-            value={profilePicture}
-            onChange={(e) => setProfilePicture(e.target.value)}
+            onChange={handleFileChange}
           />
         </div>
         <button type="submit" className="btn btn-primary">
