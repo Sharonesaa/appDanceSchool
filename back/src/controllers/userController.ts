@@ -20,7 +20,14 @@ export const createUser = [
   async (req: Request, res: Response) => {
     try {
       const userData: UserDTO = req.body;
-      const profilePicture = req.file ? req.file.path : '';
+      let profilePicture = req.file ? req.file.path : '';
+      profilePicture = profilePicture.replace(/\\/g, '/')
+
+      if (profilePicture.startsWith('src/')) {
+        profilePicture = profilePicture.replace('src/', '');
+      }
+      console.log(profilePicture)
+
       userData.profilePicture = profilePicture; // Almacenar el path de la imagen
 
       const newUser = await createUserService(userData);
@@ -92,6 +99,7 @@ export const loginUser = async (req: Request, res: Response) => {
           email: user.email,
           birthdate: user.birthdate,
           nDni: user.nDni,
+          profilePicture: user.profilePicture
         },
       });
     } else {

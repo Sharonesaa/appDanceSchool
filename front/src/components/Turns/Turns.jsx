@@ -8,7 +8,7 @@ function Turns({ turnos }) {
   const turnosArray = Array.isArray(turnos) ? turnos : [];
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 col-sm-9">
       <div className="card">
         <div className="card-header">
           Mis Turnos

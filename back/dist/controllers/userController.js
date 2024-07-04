@@ -8,24 +8,45 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginUser = exports.deactivateUserController = exports.getUserById = exports.getUsers = exports.createUser = void 0;
 const userService_1 = require("../services/userService");
-const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const userData = req.body;
-        const newUser = yield (0, userService_1.createUserService)(userData);
-        res.status(201).json({
-            message: 'User created successfully',
-            user: newUser
-        });
-    }
-    catch (error) {
-        res.status(400).json({ message: 'Error creating user', error });
-        console.error('Error during transaction:', error);
+const multer_1 = __importDefault(require("multer"));
+const storage = multer_1.default.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'src/uploads/'); // Carpeta donde se guardarán las imágenes
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
-exports.createUser = createUser;
+const upload = (0, multer_1.default)({ storage: storage });
+exports.createUser = [
+    upload.single('profilePicture'),
+    (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const userData = req.body;
+            let profilePicture = req.file ? req.file.path : '';
+            if (profilePicture.startsWith('src/')) {
+                profilePicture = profilePicture.replace('src/', '');
+            }
+            console.log(profilePicture);
+            userData.profilePicture = profilePicture; // Almacenar el path de la imagen
+            const newUser = yield (0, userService_1.createUserService)(userData);
+            res.status(201).json({
+                message: 'User created successfully',
+                user: newUser
+            });
+        }
+        catch (error) {
+            res.status(400).json({ message: 'Error creating user', error });
+            console.error('Error during transaction:', error);
+        }
+    })
+];
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield (0, userService_1.getUsersService)();
@@ -82,6 +103,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     email: user.email,
                     birthdate: user.birthdate,
                     nDni: user.nDni,
+                    profilePicture: user.profilePicture
                 },
             });
         }

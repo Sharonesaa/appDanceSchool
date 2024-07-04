@@ -48,7 +48,16 @@ function Dashboard({ onLogout }) {
         <h1>Kadenza Escuela de Baile</h1>
         <p className={exploreClasses}>Explora nuestras clases y eventos.</p>
       </div>
-      <div>
+      <div 
+      style={{
+        display: "flex",
+        marginTop: "2rem"
+      }}
+      >
+        <div className={'col-sm-3'}>
+          <img src={`http://localhost:3000/${user.profilePicture}`} alt="Profile" />
+          <p>{user.name}</p>
+        </div>
         <Turns turnos={turns} />
       </div>
       <div className={buttonContainer}>
