@@ -15,7 +15,7 @@ function Home() {
     <div>
       <Login title= "Login" />
     </div>
-  </div>
+    </div>
   );
 }
 

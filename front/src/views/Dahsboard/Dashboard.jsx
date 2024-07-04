@@ -8,7 +8,7 @@ import styles from './Dashboard.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {updateTurnos} from '../../redux/appointmentReducer'
 
-const { container, content, buttonContainer, scheduleButton } = styles;
+const { container, content, buttonContainer, scheduleButton, exploreClasses } = styles;
 
 function Dashboard({ onLogout }) {
   const turns = useSelector((state) => state.appointment.turnos);
@@ -46,15 +46,15 @@ function Dashboard({ onLogout }) {
       <Navbar onLogout={onLogout} />
       <div className={content}>
         <h1>Kadenza Escuela de Baile</h1>
-        <p>Explora nuestras clases y eventos.</p>
+        <p className={exploreClasses}>Explora nuestras clases y eventos.</p>
+      </div>
+      <div>
+        <Turns turnos={turns} />
       </div>
       <div className={buttonContainer}>
         <button className={scheduleButton} onClick={() => navigate('/schedule')}>
           Pedir Turno
         </button>
-      </div>
-      <div>
-        <Turns turnos={turns} />
       </div>
     </div>
   );

@@ -30,3 +30,25 @@
   .buttonSmall:hover {
     background-color: #0056b3; /* Color de fondo al pasar el cursor */
   }
+
+  .scheduleButton {
+    color: rgb(0, 0, 0);
+    border: 2px solid rgb(56, 56, 56);
+    background-color: transparent; /* Esto asegura que el botón no tenga un fondo */
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 12px;
+    margin-top: 1.5%;
+    margin-bottom: 2%;
+  }
+  
+  .scheduleButton:hover {
+    background-color: rgb(0, 0, 0);
+    color: white;
+  }
+
+  .exploreClasses {
+    font-size: 20px; 
+    font-weight: bold;
+  }

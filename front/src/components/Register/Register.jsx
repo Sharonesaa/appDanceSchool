@@ -16,60 +16,50 @@ function Register({ title }) {
   
     const navigate = useNavigate()
 
-    const handleFileChange = (e) => {
-      setProfilePicture(e.target.files[0]);
-    };
-
     const handleSubmit = async (e) => {
       e.preventDefault();
       if (!name || !email || !birthdate || !nDni || !username || !password || !profilePicture) {
-        setError('Todos los campos deben estar llenos.');
-        return;
+          setError('Todos los campos deben estar llenos.');
+          return;
       }
       if (password.length < 8) {
-        setError('La contraseña debe tener al menos 8 caracteres.');
-        return;
+          setError('La contraseña debe tener al menos 8 caracteres.');
+          return;
       }
       if (!profilePicture.endsWith('.jpg')) {
-        setError('La foto de perfil debe ser un archivo .jpg.');
-        return;
+          setError('La foto de perfil debe ser un archivo .jpg.');
+          return;
       }
       if (nDni.length < 5) {
-        setError('Ingrese un DNI válido de al menos 5 dígitos.');
-        return;
+          setError('Ingrese un DNI válido de al menos 5 dígitos.');
+          return;
       }
-  
+
       // Clear error before making the request
       setError('');
 
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('email', email);
-      formData.append('birthdate', birthdate);
-      formData.append('nDni', nDni);
-      formData.append('username', username);
-      formData.append('password', password);
-      formData.append('profilePicture', profilePicture);
-  
       try {
-        const response = await axios.post('http://localhost:3000/user/register', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+          const response = await axios.post('http://localhost:3000/user/register', { 
+              name, 
+              email, 
+              birthdate, 
+              nDni, 
+              username, 
+              password, 
+              profilePicture 
+          });
+          
+          if (response.data.user) {
+              console.log(response.data);
+              alert(`Usuario registrado con éxito: ${response.data.user.id}`);
+              navigate('/'); // Redirect to login page
+          } else {
+              setError('Registration failed');
           }
-        });
-  
-         console.log('User data to be sent:', response);
-
-        if (response.data.user) {
-          alert(`Usuario registrado con exito:${response.data.user.id}`)
-          navigate('/');
-        } else {
-          setError('Registration failed');
-        }
       } catch (err) {
-        setError('Error during registration');
+          setError('Error during registration');
       }
-    };
+  };
   
     return (
       <form onSubmit={handleSubmit} className={styles['register-form']}>

@@ -10,8 +10,11 @@ function ScheduleView() {
         <div className = {container}>
             <Navbar />
             <div className= {content} >
-                <h1>Kadenza Escuela de Baile</h1>
-                <p>Explora nuestras clases y eventos.</p>
+                <h1
+                style={{
+                    marginTop: "2rem",
+                  }}
+                >Kadenza Escuela de Baile</h1>
             </div>
             <Schedule title="Register"/>
         </div>

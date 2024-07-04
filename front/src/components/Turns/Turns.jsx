@@ -1,6 +1,7 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Turn from '../Turn';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function Turns({ turnos }) {
   // Si turnos no es un array, usa un array vacío en su lugar
