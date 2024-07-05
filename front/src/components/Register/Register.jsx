@@ -135,6 +135,7 @@ function Register({ title }) {
             type="file"
             className="form-control"
             placeholder="Profile Picture URL"
+            accept="image/*"
             onChange={handleFileChange}
           />
         </div>
