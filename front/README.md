@@ -5,7 +5,7 @@
 ![Redux](https://w7.pngwing.com/pngs/129/702/png-transparent-redux-full-logo-tech-companies.png)
 ![Vite](https://logospng.org/wp-content/uploads/vite-js-logo.png)
 ![Nodemailer](https://th.bing.com/th/id/R.561211e4ac9c4705aee86f9efe004a48?rik=olyuedZAA3QTKQ&riu=http%3a%2f%2fnodemailer.com%2fnm_logo_200x136.png&ehk=oeHVu5BE2LdKw6qIMfY7GUxaNPH5%2brSQaCVLSKWMf0Q%3d&risl=&pid=ImgRaw&r=0)
-![PostgreSQL](https://www.liblogo.com/img-logo/po4159p5ee-postgresql-logo-postgresql-logo.png)
+![PostgreSQL](https://www.clipartmax.com/png/middle/242-2423721_logo-postgresql.png)
 ![Cloudinary](https://logo-download.com/wp-content/data/images/png/Cloudinary-logo.png)
 
 ## Descripción
