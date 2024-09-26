@@ -1,13 +1,3 @@
-# App Dance School
-
-![NestJS](https://nestjs.com/img/logo.svg)
-![React](https://www.liblogo.com/img-logo/re269re79-react-logo-react-logo-.png)
-![Redux](https://w7.pngwing.com/pngs/129/702/png-transparent-redux-full-logo-tech-companies.png)
-![Vite](https://logospng.org/wp-content/uploads/vite-js-logo.png)
-![Nodemailer](https://th.bing.com/th/id/R.561211e4ac9c4705aee86f9efe004a48?rik=olyuedZAA3QTKQ&riu=http%3a%2f%2fnodemailer.com%2fnm_logo_200x136.png&ehk=oeHVu5BE2LdKw6qIMfY7GUxaNPH5%2brSQaCVLSKWMf0Q%3d&risl=&pid=ImgRaw&r=0)
-![PostgreSQL](https://www.vhv.rs/dpng/d/542-5425575_postgres-logo-png-transparent-png.png)
-![Cloudinary](https://logo-download.com/wp-content/data/images/png/Cloudinary-logo.png)
-
 ## Descripción
 
 **App Dance School** es una aplicación web completa para la gestión de clases de baile, estudiantes e instructores. La aplicación incluye un sistema de reservas, notificaciones por correo electrónico utilizando **Nodemailer**, y un frontend construido con **React** y **Redux** para la administración y visualización de las clases, todo empaquetado y desarrollado utilizando **Vite** para un entorno rápido y eficiente.
