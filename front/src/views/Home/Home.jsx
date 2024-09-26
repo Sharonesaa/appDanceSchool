@@ -5,7 +5,10 @@ const {container, content, navbarContainer} = styles;
 
 function Home() {
   return (
-    <div className={container}>
+    <div 
+    className={container}
+    style={{marginTop: "0"}}
+    >
       <div className={navbarContainer}>
         <Navbar />
       </div>
